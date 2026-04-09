@@ -1,0 +1,82 @@
+---
+import '../styles/global.css';
+
+export interface Props {
+  title?: string;
+  description?: string;
+  theme?: string;
+}
+
+const { title, description, theme = 'budaya' } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title || 'Portal Epigrap'}</title>
+    {description && <meta name="description" content={description} />}
+    <meta name="robots" content="index, follow" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  </head>
+  <body data-theme={theme} style="margin:0; padding:0;">
+    <slot />
+
+    <!-- Watermark Epigrap kecil di pojok bawah -->
+    <footer class="portal-footer">
+      <a href="https://epigrap.com" target="_blank" rel="noopener noreferrer" class="portal-footer-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+        </svg>
+        <span>Powered by Epigrap</span>
+      </a>
+    </footer>
+  </body>
+</html>
+
+<style>
+  .portal-footer {
+    text-align: center;
+    padding: 2rem 1rem;
+    border-top: 1px solid var(--color-granite);
+    background-color: var(--color-obsidian);
+  }
+
+  .portal-footer-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--color-brass);
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-decoration: none;
+    animation: glow-pulse 4s ease-in-out infinite;
+  }
+
+  .portal-footer-link:hover {
+    opacity: 1;
+    color: #F0D080;
+    animation: none;
+    text-shadow: 0 0 10px #C5A059, 0 0 25px rgba(197,160,89,0.5), 0 0 40px rgba(197,160,89,0.2);
+  }
+
+  .portal-footer-link svg {
+    color: var(--color-brass);
+  }
+
+  @keyframes glow-pulse {
+    0%, 100% {
+      opacity: 0.2;
+      text-shadow: none;
+      filter: none;
+    }
+    50% {
+      opacity: 0.7;
+      color: #F0D080;
+      text-shadow: 0 0 6px #C5A059, 0 0 18px rgba(197,160,89,0.35);
+      filter: drop-shadow(0 0 5px rgba(197,160,89,0.25));
+    }
+  }
+</style>

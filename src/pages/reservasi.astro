@@ -1,0 +1,214 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Reservasi Terbatas | Epigrap">
+  <div class="page-container">
+    <div class="container form-wrapper">
+      <div class="form-header">
+        <h1>Reservasi White-Glove</h1>
+        <p>Layanan Epigrap beroperasi dengan model undangan dan reservasi terbatas demi menjaga eksklusivitas serta kualitas pengerjaan monograf digital.</p>
+      </div>
+
+      <form id="reservasi-form" class="elegant-form" action="#" method="POST">
+        <!-- Fitur Anti-Spam Lapisan 1: Honeypot (Jebakan Bot) - Disembunyikan rapat dari manusia via CSS, namun akan diisi paksa oleh program Bot spammer -->
+        <input type="text" name="fax_number" id="fax_number" tabindex="-1" autocomplete="off" style="display:none !important; visibility:hidden;" />
+
+        <div class="form-group">
+          <label for="nama">Nama Lengkap Perwakilan</label>
+          <input type="text" id="nama" name="nama" required placeholder="Cth: Raden Mas Haryo..." />
+        </div>
+
+        <div class="form-group">
+          <label for="kategori">Kategori Layanan</label>
+          <select id="kategori" name="kategori" required>
+            <option value="" disabled selected>Pilih Kategori</option>
+            <option value="keluarga">Trah / Keluarga Besar</option>
+            <option value="institusi">Pemerintah / Institusi</option>
+            <option value="personal">Tokoh / Personal</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="entitas">Nama Trah / Institusi / Desa</label>
+          <input type="text" id="entitas" name="entitas" required placeholder="Cth: Paguyuban Keluarga Sosrodiningrat" />
+        </div>
+
+        <div class="form-group">
+          <label for="whatsapp">Nomor WhatsApp Aktif</label>
+          <input type="tel" id="whatsapp" name="whatsapp" required placeholder="+62 8..." />
+        </div>
+
+        <button type="submit" class="submit-btn">Ajukan Reservasi</button>
+      </form>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .page-container {
+    padding: 10rem 0 6rem;
+    min-height: 100vh;
+    background-image: radial-gradient(circle at 50% 0%, rgba(122, 16, 26, 0.15) 0%, transparent 70%);
+  }
+
+  .form-wrapper {
+    max-width: 600px;
+    margin: 0 auto;
+    background: rgba(18, 18, 18, 0.6);
+    padding: 3rem;
+    border-radius: 8px;
+    border: 1px solid rgba(197, 160, 89, 0.2);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    backdrop-filter: blur(10px);
+  }
+
+  .form-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .form-header h1 {
+    font-size: 2.5rem;
+    color: var(--color-brass);
+    margin-bottom: 1rem;
+  }
+
+  .form-header p {
+    color: #999;
+    line-height: 1.6;
+  }
+
+  .elegant-form .form-group {
+    margin-bottom: 1.5rem;
+  }
+
+  .elegant-form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--color-parchment);
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+  }
+
+  .elegant-form input, .elegant-form select {
+    width: 100%;
+    padding: 1rem;
+    background-color: rgba(0,0,0,0.5);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--color-parchment);
+    border-radius: 4px;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+
+  .elegant-form input:focus, .elegant-form select:focus {
+    outline: none;
+    border-color: var(--color-brass);
+    box-shadow: 0 0 0 1px var(--color-brass);
+  }
+
+  .submit-btn {
+    width: 100%;
+    padding: 1.2rem;
+    background-color: var(--color-brass);
+    color: var(--color-obsidian);
+    border: none;
+    border-radius: 4px;
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: background-color 0.3s, transform 0.2s;
+  }
+
+  .submit-btn:hover {
+    background-color: #d4b572;
+    transform: translateY(-2px);
+  }
+
+  @media (max-width: 600px) {
+    .form-wrapper {
+      padding: 2rem 1.5rem;
+    }
+  }
+</style>
+
+<script>
+  // Hubungkan elemen dan definisikan tipenya (TypeScript) agar IDE tidak membacanya sebagai Element statis
+  const form = document.getElementById('reservasi-form') as HTMLFormElement | null;
+  const namaInput = document.getElementById('nama') as HTMLInputElement | null;
+  const waInput = document.getElementById('whatsapp') as HTMLInputElement | null;
+
+  if (namaInput) {
+    // 1. Validator Nama: Mencegah pengetikan angka 
+    namaInput.addEventListener('input', function() {
+      namaInput.value = namaInput.value.replace(/[0-9]/g, '');
+    });
+  }
+
+  if (waInput) {
+    // 2. Auto-Formatter WhatsApp: Otomatis buang '+', '-', spasi saat Paste/Ketik
+    waInput.addEventListener('input', function() {
+      waInput.value = waInput.value.replace(/\D/g, '');
+    });
+  }
+
+  if (form) {
+    // 3. Validator Web & Anti-Spam saat akan Submit Formulir
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      // [A] Cek Honeypot (Perangkap Bot)
+      const honeypot = document.getElementById('fax_number') as HTMLInputElement | null;
+      if (honeypot && honeypot.value !== '') {
+        // Jika terisi, ini 100% adalah instruksi/robot otomatis.
+        // Hentikan proses, namun berpura-pura diam saja agar bot tertipu seolah berhasil menembus.
+        console.warn('Keamanan Epigrap: Upaya instruksi spam otomatis dicegat secara diam-diam.');
+        return;
+      }
+
+      // [B] Cek Cooldown (Pencegahan Spam Manual Berkala via Rate Limiter Komputer Pengunjung)
+      const lastSubmitTime = localStorage.getItem('epigrap_last_submit');
+      if (lastSubmitTime) {
+        const timeDiff = new Date().getTime() - parseInt(lastSubmitTime);
+        const minutesPassed = timeDiff / (1000 * 60);
+
+        // Batasi pengiriman formulir baru dari peramban yang sama minimal dijeda 5 menit waktu tunggu
+        if (minutesPassed < 5) {
+          alert('Sistem mencatat Anda baru saja mengirimkan formulir ini. Sebagai langkah keamanan dari tindakan spam, mohon tunggu 5 menit lagi sebelum Anda dapat mengirim formulir yang baru.');
+          return;
+        }
+      }
+      
+      if (waInput) {
+        const waVal = waInput.value;
+        
+        // Memastikan awalan yang diminta (08 atau 62)
+        if (!waVal.startsWith('62') && !waVal.startsWith('08')) {
+          alert('Nomor WhatsApp tidak valid. Pastikan nomor diawali dengan angka 08 atau kode negara 62.');
+          waInput.focus();
+          return;
+        }
+        
+        // Memastikan panjang string nomor tidak asal-asalan
+        if (waVal.length < 10 || waVal.length > 15) {
+          alert('Panjang digit nomor WhatsApp tidak sesuai (biasanya 10 hingga 15 angka).');
+          waInput.focus();
+          return;
+        }
+      }
+
+      // Sukses Lolos Validasi Anti-Spam
+      // Catat rekam jejak waktu sukses pengiriman di ruang penyimpanan memori perangkat/browser klien
+      localStorage.setItem('epigrap_last_submit', new Date().getTime().toString());
+
+      alert('Terima kasih. Permintaan reservasi Anda telah dicatat. Tim Concierge kami akan segera menindaklanjuti dan menghubungi Anda melalui WhatsApp.');
+      form.reset();
+    });
+  }
+</script>

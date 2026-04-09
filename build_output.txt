@@ -1,0 +1,27 @@
+﻿[2m23.19.17[22m [34m[@astrojs/cloudflare][39m Enabling image processing with Cloudflare Images for production with the "IMAGES" Images binding.
+[2m23.19.17[22m [34m[@astrojs/cloudflare][39m Enabling sessions with Cloudflare KV with the "SESSION" KV binding.
+Using secrets defined in .env
+node.exe : [31m[1m23.19.18[22m [ERROR] [vite][39m service core:user:wandering-wasp: This Wor
+ker requires compatibility date "2026-04-09", but the newest date supported by this server binar
+y is "2026-04-08".
+At line:1 char:1
++ & "C:\Program Files\nodejs/node.exe" "C:\Program Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([31m[1m23.19....s "2026-04-08".:String) [], Remo 
+   teException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+The Workers runtime failed to start. There is likely additional logging output above.
+  [1mLocation:[22m
+    [4mC:\Users\lohji\.gemini\antigravity\scratch\epigrap\node_modules\miniflare\dist\src\index
+.js:87395:13[24m
+  [1mStack trace:[22m
+[2m    at #assembleAndUpdateConfig (C:\Users\lohji\.gemini\antigravity\scratch\epigrap\node_mod
+ules\miniflare\dist\src\index.js:87395:13)
+    at async Mutex.runWith (C:\Users\lohji\.gemini\antigravity\scratch\epigrap\node_modules\mini
+flare\dist\src\index.js:56720:48)
+    at async _Miniflare.dispatchFetch (C:\Users\lohji\.gemini\antigravity\scratch\epigrap\node_m
+odules\miniflare\dist\src\index.js:87660:5)
+    at async Promise.all (index 0)
+    at async _createServer (file:///C:/Users/lohji/.gemini/antigravity/scratch/epigrap/node_modu
+les/vite/dist/node/chunks/config.js:25603:86)[22m

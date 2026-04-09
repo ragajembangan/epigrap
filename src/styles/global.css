@@ -1,0 +1,146 @@
+/* =============================================
+   EPIGRAP — Global Design System
+   Tipografi: Playfair Display (Heading) + DM Sans (Body)
+   Palet: Obsidian, Granite, Brass, Velvet, Parchment
+   ============================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap');
+
+/* =============================================
+   CSS CUSTOM PROPERTIES (Design Tokens)
+   ============================================= */
+:root {
+  /* Warna Utama */
+  --color-obsidian: #0A0A0A;    /* Latar belakang paling gelap */
+  --color-granite:  #1A1A1A;    /* Latar belakang kartu/sekunder */
+  --color-brass:    #C5A059;    /* Aksen Emas — untuk CTA & Highlight */
+  --color-velvet:   #7A101A;    /* Aksen Merah Tua — untuk aksen dramatik */
+  --color-parchment: #E8DEC8;   /* Teks Heading utama */
+
+  /* Tipografi */
+  --font-heading: 'Playfair Display', Georgia, serif;
+  --font-body:    'DM Sans', system-ui, sans-serif;
+
+  /* Ukuran & Spasi */
+  --container-max: 1200px;
+  --section-padding: 8rem 0;
+}
+
+/* =============================================
+   THEME VARIABLES (Dynamic Portals)
+   ============================================= */
+[data-theme="memorial"] {
+  --color-obsidian: #050505;
+  --color-granite: #111111;
+  --color-brass: #A8A8A8; /* Silver/Ashes */
+  --color-velvet: #333333;
+  --color-parchment: #D3D3D3;
+}
+
+[data-theme="klasik"] {
+  --color-obsidian: #1B0F0E; /* Dark Maroon */
+  --color-granite: #2A1715;
+  --color-brass: #D4AF37; /* Chinese Gold */
+  --color-velvet: #8B0000;
+  --color-parchment: #F5DEB3;
+}
+
+[data-theme="religius"] {
+  --color-obsidian: #0B140D; /* Dark Olive */
+  --color-granite: #132417;
+  --color-brass: #B6C48B; /* Soft Sage */
+  --color-velvet: #1F3F24;
+  --color-parchment: #F0F5ED;
+}
+
+[data-theme="formal"] {
+  --color-obsidian: #0A0F1C; /* Dark Navy */
+  --color-granite: #111827; 
+  --color-brass: #60A5FA; /* Blue Accent */
+  --color-velvet: #1E3A8A;
+  --color-parchment: #F3F4F6;
+}
+
+[data-theme="budaya"] {
+  --color-obsidian: #1C1510; /* Earthy Dark */
+  --color-granite: #2D231B;
+  --color-brass: #D67A3B; /* Terracotta/Copper */
+  --color-velvet: #5C3A21;
+  --color-parchment: #EDE3DA;
+}
+
+/* =============================================
+   RESET & BASE
+   ============================================= */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-obsidian);
+  color: var(--color-parchment);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  color: var(--color-parchment);
+  line-height: 1.2;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* =============================================
+   UTILITY CLASSES
+   ============================================= */
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: 2rem;
+}
+
+.text-brass {
+  color: var(--color-brass);
+}
+
+.text-velvet {
+  color: var(--color-velvet);
+}
+
+/* =============================================
+   SCROLLBAR (Styling agar serasi dengan tema gelap)
+   ============================================= */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-obsidian);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-granite);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-brass);
+}

@@ -1,0 +1,97 @@
+---
+import SEO from '../components/SEO.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+
+export interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <SEO title={title} description={description} />
+  </head>
+  <body>
+    <Navbar />
+    <main>
+      <slot />
+    </main>
+    <Footer />
+
+    <!-- Tombol Back to Top -->
+    <button id="back-to-top" aria-label="Kembali ke atas" title="Kembali ke atas">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="18 15 12 9 6 15"/>
+      </svg>
+    </button>
+
+  </body>
+</html>
+
+<style>
+  #back-to-top {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 999;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: rgba(26, 26, 26, 0.9);
+    border: 1px solid rgba(197, 160, 89, 0.4);
+    color: #C5A059;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    transition: all 0.3s ease;
+
+    /* Tersembunyi di awal */
+    opacity: 0;
+    transform: translateY(10px);
+    pointer-events: none;
+  }
+
+  #back-to-top.visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  #back-to-top:hover {
+    background-color: #C5A059;
+    color: #0A0A0A;
+    border-color: #C5A059;
+    box-shadow: 0 6px 25px rgba(197, 160, 89, 0.4);
+    transform: translateY(-3px);
+  }
+
+  #back-to-top svg {
+    width: 20px;
+    height: 20px;
+  }
+</style>
+
+<script>
+  const btn = document.getElementById('back-to-top');
+
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 400) {
+      btn?.classList.add('visible');
+    } else {
+      btn?.classList.remove('visible');
+    }
+  });
+
+  btn?.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+</script>

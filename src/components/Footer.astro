@@ -1,0 +1,143 @@
+---
+const currentYear = new Date().getFullYear();
+---
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <h2 class="logo">EPIGRAP</h2>
+        <p class="tagline">Mengubah Monumen Bisu Menjadi Portal Ruang & Waktu.</p>
+        <p class="description">Platform Phygital premium untuk pelestarian sejarah, cagar budaya, dan institusi.</p>
+      </div>
+      
+      <div class="footer-links">
+        <h3>Layanan</h3>
+        <ul>
+          <li><a href="/demo">Galeri Purwarupa</a></li>
+          <li><a href="/blog">Insights & Inovasi</a></li>
+          <li><a href="/reservasi">Reservasi White-Glove</a></li>
+          <li><a href="/dasbor">Portal Klien</a></li>
+          <li><a href="/#solusi">Solusi Institusi</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-links">
+        <h3>Legal</h3>
+        <ul>
+          <li><a href="/privasi">Kebijakan Privasi</a></li>
+          <li><a href="/syarat-ketentuan">Syarat & Ketentuan</a></li>
+          <li><a href="/pelepasan-tanggung-jawab">Pelepasan Tanggung Jawab</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-contact">
+        <h3>Kontak</h3>
+        <p>Bantuan & Pertanyaan:</p>
+        <a href="mailto:concierge@epigrap.com" class="contact-email">concierge@epigrap.com</a>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <p>&copy; {currentYear} Epigrap. All rights reserved. Crafted for Eternity.</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background-color: #050505;
+    padding: 6rem 0 2rem;
+    border-top: 1px solid rgba(197, 160, 89, 0.2); /* Subtle brass border */
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 4rem;
+    margin-bottom: 4rem;
+  }
+
+  .logo {
+    font-family: var(--font-heading);
+    color: var(--color-brass);
+    font-size: 2rem;
+    letter-spacing: 2px;
+    margin-bottom: 1rem;
+  }
+
+  .tagline {
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    color: var(--color-parchment);
+    margin-bottom: 0.5rem;
+  }
+
+  .description {
+    color: #888;
+    font-size: 0.9rem;
+    max-width: 300px;
+  }
+
+  .footer-links h3, .footer-contact h3 {
+    font-family: var(--font-heading);
+    color: var(--color-parchment);
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+  }
+
+  .footer-links ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .footer-links li {
+    margin-bottom: 0.8rem;
+  }
+
+  .footer-links a {
+    color: #888;
+    font-size: 0.9rem;
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover {
+    color: var(--color-brass);
+  }
+
+  .footer-contact p {
+    color: #888;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .contact-email {
+    color: var(--color-brass);
+    font-size: 1rem;
+    font-weight: 500;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  .footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 2rem;
+    text-align: center;
+    color: #666;
+    font-size: 0.85rem;
+  }
+
+  @media (max-width: 992px) {
+    .footer-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .footer-grid {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+  }
+</style>

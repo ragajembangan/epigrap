@@ -1,0 +1,58 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import HeroSection from '../components/sections/HeroSection.astro';
+import ProblemSection from '../components/sections/ProblemSection.astro';
+import SolutionSection from '../components/sections/SolutionSection.astro';
+import UseCaseSection from '../components/sections/UseCaseSection.astro';
+import TrustSection from '../components/sections/TrustSection.astro';
+import PartnersSection from '../components/sections/PartnersSection.astro';
+import { getHomepage } from '../lib/sanity';
+
+const hp = await getHomepage();
+---
+
+<BaseLayout 
+  title={`Epigrap — ${hp?.heroHeadline || 'Mengubah Monumen Bisu'} ${hp?.heroHeadlineAccent || 'Menjadi Portal Ruang & Waktu.'}`}
+  description={hp?.heroSubtext || 'Platform Phygital premium yang menyulap tugu, prasasti fisik, dan karya seni menjadi arsip digital interaktif tanpa batas. Hadirkan pariwisata cerdas dan pelestarian budaya dalam satu pindaian.'}
+>
+  <HeroSection
+    headline={hp?.heroHeadline}
+    headlineAccent={hp?.heroHeadlineAccent}
+    subtext={hp?.heroSubtext}
+    backgroundImage={hp?.heroBackgroundImage}
+    cta1Text={hp?.heroCta1Text}
+    cta1Link={hp?.heroCta1Link}
+    cta2Text={hp?.heroCta2Text}
+    cta2Link={hp?.heroCta2Link}
+  />
+  <ProblemSection
+    title={hp?.problemTitle}
+    titleAccent={hp?.problemTitleAccent}
+    desc1={hp?.problemDesc1}
+    desc2={hp?.problemDesc2}
+    imageBefore={hp?.problemImageBefore}
+    labelBefore={hp?.problemLabelBefore}
+    imageAfter={hp?.problemImageAfter}
+    labelAfter={hp?.problemLabelAfter}
+  />
+  <SolutionSection
+    title={hp?.solutionTitle}
+    titleAccent={hp?.solutionTitleAccent}
+    titleSuffix={hp?.solutionTitleSuffix}
+    desc={hp?.solutionDesc}
+    cards={hp?.solutionCards}
+  />
+  <UseCaseSection
+    cards={hp?.useCaseCards}
+  />
+  <TrustSection
+    title={hp?.trustTitle}
+    desc={hp?.trustDesc}
+    items={hp?.trustItems}
+    blockchainTitle={hp?.blockchainTitle}
+    blockchainDesc={hp?.blockchainDesc}
+  />
+  <PartnersSection
+    dividerText={hp?.partnersDividerText}
+  />
+</BaseLayout>

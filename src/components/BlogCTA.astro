@@ -1,0 +1,76 @@
+---
+---
+
+<div class="blog-cta">
+  <div class="cta-content">
+    <h2 class="cta-title">Siap mengabadikan sejarah?</h2>
+    <p class="cta-desc">
+      Jadikan monumen fisik Anda sebagai portal digital interaktif tanpa batas bersama Epigrap.
+    </p>
+    <a href="/demo" class="cta-btn">Jelajahi Portal</a>
+  </div>
+</div>
+
+<style>
+  .blog-cta {
+    margin: 4rem 0;
+    padding: 3rem 2rem;
+    background: linear-gradient(135deg, var(--color-granite) 0%, var(--color-obsidian) 100%);
+    border: 1px solid rgba(197, 160, 89, 0.2);
+    border-radius: 16px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .blog-cta::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, transparent, var(--color-brass), transparent);
+  }
+
+  .cta-content {
+    position: relative;
+    z-index: 2;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .cta-title {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    color: var(--color-parchment);
+    margin-bottom: 1rem;
+    font-family: var(--font-heading);
+  }
+
+  .cta-desc {
+    font-size: 1.1rem;
+    color: #a0a0a0;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+  }
+
+  .cta-btn {
+    display: inline-block;
+    background-color: var(--color-velvet);
+    color: var(--color-parchment);
+    padding: 0.8rem 2rem;
+    border-radius: 4px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: 1px solid var(--color-velvet);
+  }
+
+  .cta-btn:hover {
+    background-color: transparent;
+    border-color: var(--color-parchment);
+    transform: translateY(-2px);
+  }
+</style>

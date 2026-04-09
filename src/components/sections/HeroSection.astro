@@ -1,0 +1,161 @@
+---
+import { urlFor } from '../../lib/urlFor';
+
+interface Props {
+  headline?: string;
+  headlineAccent?: string;
+  subtext?: string;
+  backgroundImage?: any;
+  cta1Text?: string;
+  cta1Link?: string;
+  cta2Text?: string;
+  cta2Link?: string;
+}
+
+const {
+  headline = 'Mengubah Monumen Bisu',
+  headlineAccent = 'Menjadi Portal Ruang & Waktu.',
+  subtext = 'Platform Phygital premium yang menyulap tugu, prasasti fisik, dan karya seni menjadi arsip digital interaktif tanpa batas. Hadirkan pariwisata cerdas dan pelestarian budaya dalam satu pindaian.',
+  backgroundImage,
+  cta1Text = 'Jelajahi Portal',
+  cta1Link = '/demo',
+  cta2Text = 'Lihat Cara Kerja',
+  cta2Link = '#solusi',
+} = Astro.props;
+
+const bgUrl = backgroundImage
+  ? urlFor(backgroundImage).width(2000).url()
+  : 'https://images.unsplash.com/photo-1533155716508-fae9185e78b7?q=80&w=2000&auto=format&fit=crop';
+---
+<section class="hero-section" style={`background-image: url('${bgUrl}')`}>
+  <div class="hero-overlay"></div>
+  <div class="container hero-content">
+    <h1 class="hero-headline">{headline}<br/><span class="text-brass">{headlineAccent}</span></h1>
+    <p class="hero-subtext">
+      {subtext}
+    </p>
+    <div class="hero-ctas">
+      <a href={cta1Link} class="btn-primary-large">{cta1Text}</a>
+      <a href={cta2Link} class="btn-outline-gold">{cta2Text}</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero-section {
+    position: relative;
+    height: 100vh;
+    min-height: 700px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+  }
+
+  .hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      180deg, 
+      rgba(10, 10, 10, 0.7) 0%, 
+      rgba(10, 10, 10, 0.5) 50%, 
+      rgba(10, 10, 10, 0.95) 100%
+    );
+    z-index: 1;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    max-width: 1200px;
+    padding-top: 5rem;
+    padding-inline: 1rem;
+    animation: fadeIn 1.5s ease-out forwards;
+  }
+
+  .hero-headline {
+    font-size: clamp(1rem, 5.5vw, 4rem);
+    margin-bottom: 1.5rem;
+    letter-spacing: 1px;
+    text-shadow: 0 4px 20px rgba(0,0,0,0.8);
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+
+  .text-brass {
+    color: var(--color-brass);
+  }
+
+  .hero-subtext {
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    color: var(--color-parchment);
+    opacity: 0.9;
+    max-width: 700px;
+    margin: 0 auto 3rem;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+  }
+
+  .hero-ctas {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary-large {
+    background-color: var(--color-velvet);
+    color: var(--color-parchment);
+    padding: 1rem 2rem;
+    border-radius: 4px;
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    transition: all 0.3s ease;
+    border: 1px solid var(--color-velvet);
+  }
+
+  .btn-primary-large:hover {
+    background-color: transparent;
+    border: 1px solid var(--color-parchment);
+    transform: translateY(-2px);
+  }
+
+  .btn-outline-gold {
+    background-color: transparent;
+    color: var(--color-brass);
+    border: 1px solid var(--color-brass);
+    padding: 1rem 2rem;
+    border-radius: 4px;
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    transition: all 0.3s ease;
+  }
+
+  .btn-outline-gold:hover {
+    background-color: rgba(197, 160, 89, 0.1);
+    transform: translateY(-2px);
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 768px) {
+    /* Fix iOS Safari: background-attachment:fixed tidak didukung dengan baik */
+    .hero-section {
+      background-attachment: scroll;
+    }
+  }
+</style>

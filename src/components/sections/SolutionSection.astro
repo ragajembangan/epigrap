@@ -1,0 +1,216 @@
+---
+import type { HomepageSolutionCard } from '../../lib/sanity';
+
+interface Props {
+  title?: string;
+  titleAccent?: string;
+  titleSuffix?: string;
+  desc?: string;
+  cards?: HomepageSolutionCard[];
+}
+
+const defaultCards: HomepageSolutionCard[] = [
+  {
+    _key: 'default-1',
+    cardTitle: 'Instalasi Fisik',
+    cardDesc: 'Plakat atau prasasti elegan berbahan premium dengan kode aksesibilitas QR yang diukir atau ditanamkan secara permanen pada permukaan material.',
+    cardFeatures: ['Granit, Marmer, Kuningan Premium', 'QR Code Tahan Cuaca & UV', 'Desain Kustom Eksklusif'],
+  },
+  {
+    _key: 'default-2',
+    cardTitle: 'Portal Digital',
+    cardDesc: 'Pemindaian kode langsung membuka monograf multimedia interaktif — teks naratif, foto, video, rekaman suara, dan dokumen sejarah.',
+    cardFeatures: ['Galeri Foto & Video', 'Ensiklopedia & Audio', 'Saluran Dukungan & Donasi Kreator'],
+  },
+];
+
+const {
+  title = 'Solusi',
+  titleAccent = 'Phygital',
+  titleSuffix = 'Kami',
+  desc = 'Menggabungkan kekokohan monumen fisik dengan kedalaman arsip digital tanpa batas.',
+  cards = defaultCards,
+} = Astro.props;
+
+// SVG icons for cards (keep hardcoded since they're decorative)
+const cardIcons = [
+  // Instalasi Fisik icon
+  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"></rect><path d="M3 9h18M9 21V9"></path></svg>`,
+  // Portal Digital icon
+  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="2" width="14" height="20" rx="2"></rect><path d="M12 18h.01"></path><path d="M9 6h6M9 10h6M9 14h4"></path></svg>`,
+];
+---
+
+<section class="solution-section" id="solusi">
+  <div class="container">
+    <div class="solution-header">
+      <h2 class="section-title">
+        {title} <span class="text-brass">{titleAccent}</span> {titleSuffix}
+      </h2>
+      <p class="section-desc">
+        {desc}
+      </p>
+    </div>
+
+    <div class="solution-grid">
+      {cards.map((card, i) => (
+        <div class={`solution-card ${i === 0 ? 'card-light' : 'card-dark'}`}>
+          <div class="card-icon">
+            <Fragment set:html={cardIcons[i] || cardIcons[0]} />
+          </div>
+          <h3 class="card-title">{card.cardTitle}</h3>
+          <p class="card-desc">{card.cardDesc}</p>
+          {card.cardFeatures && card.cardFeatures.length > 0 && (
+            <ul class="card-features">
+              {card.cardFeatures.map((f) => (
+                <li>{f}</li>
+              ))}
+            </ul>
+          )}
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .solution-section {
+    padding: 8rem 0;
+    background-color: var(--color-granite);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .solution-header {
+    text-align: center;
+    margin-bottom: 5rem;
+  }
+
+  .section-title {
+    font-size: clamp(2rem, 4vw, 3rem);
+    margin-bottom: 1rem;
+  }
+
+  .text-brass {
+    color: var(--color-brass);
+  }
+
+  .section-desc {
+    color: #888;
+    max-width: 600px;
+    margin: 0 auto;
+    font-size: 1.1rem;
+  }
+
+  .solution-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+  }
+
+  .solution-card {
+    border-radius: 8px;
+    padding: 3rem;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    transition:
+      transform 0.4s ease,
+      box-shadow 0.4s ease,
+      border-color 0.4s ease;
+  }
+
+  .solution-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+    border-color: rgba(197, 160, 89, 0.25);
+  }
+
+  .card-light {
+    background-color: #1e1b14;
+    color: var(--color-parchment);
+    border-color: rgba(197, 160, 89, 0.2);
+  }
+
+  .card-dark {
+    background-color: #111;
+    color: var(--color-parchment);
+  }
+
+  .card-icon {
+    width: 52px;
+    height: 52px;
+    margin-bottom: 1.8rem;
+    color: var(--color-brass);
+  }
+
+  .card-icon svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .card-title {
+    font-size: 1.7rem;
+    margin-bottom: 1.2rem;
+    font-family: var(--font-heading);
+    color: inherit;
+  }
+
+  .card-light .card-title {
+    color: var(--color-parchment);
+  }
+
+  .card-desc {
+    font-size: 1rem;
+    line-height: 1.75;
+    margin-bottom: 2rem;
+    opacity: 0.8;
+  }
+
+  .card-dark .card-desc {
+    color: #bbb;
+    opacity: 1;
+  }
+
+  .card-light .card-desc {
+    color: #d0c8b0;
+    opacity: 1;
+  }
+
+  .card-features {
+    list-style: none;
+    padding: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    padding-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+
+  .card-light .card-features {
+    border-color: rgba(197, 160, 89, 0.15);
+  }
+
+  .card-dark .card-features {
+    border-color: rgba(255, 255, 255, 0.08);
+  }
+
+  .card-features li {
+    font-size: 0.9rem;
+    font-weight: 500;
+    padding-left: 1.2rem;
+    position: relative;
+    color: var(--color-brass);
+  }
+
+  .card-features li::before {
+    content: "♦";
+    position: absolute;
+    left: 0;
+    font-size: 0.7em;
+    top: 2px;
+  }
+
+  @media (max-width: 768px) {
+    .solution-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

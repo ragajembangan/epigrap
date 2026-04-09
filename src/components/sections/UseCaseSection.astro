@@ -1,0 +1,205 @@
+---
+import { Image } from "astro:assets";
+import { urlFor } from '../../lib/urlFor';
+import type { HomepageUseCaseCard } from '../../lib/sanity';
+import imgPariwisata from "../../assets/pariwisata_prasasti_dieng2_raw.png";
+import imgInstitusi from "../../assets/prasasti_arsip_nasional_prabowo_v3.png";
+
+interface Props {
+  cards?: HomepageUseCaseCard[];
+}
+
+const defaultCards: HomepageUseCaseCard[] = [
+  {
+    _key: 'default-pariwisata',
+    cardTitle: 'Pariwisata & Cagar Budaya',
+    cardDesc: 'Menghadirkan pengalaman smart tourism. Wisatawan dapat memindai QR untuk mengakses sejarah multibahasa, video, dan memberikan apresiasi finansial langsung kepada paguyuban seni lokal.',
+    cardFeatures: ['Sejarah Multibahasa', 'Galeri Video', 'Dukungan Finansial Kreator'],
+  },
+  {
+    _key: 'default-institusi',
+    cardTitle: 'Pemerintah & Institusi',
+    cardDesc: 'Memberikan kedalaman sejarah pada tugu peringatan, museum, atau prasasti peresmian agar publik dapat mengakses literatur, video, dan arsip kenegaraan seketika.',
+    cardFeatures: ['Log Aktivitas Publik', 'Media Interaktif Multibahasa', 'Panel Analitik Akses'],
+  },
+];
+
+// Local asset fallback images in order
+const localImages = [imgPariwisata, imgInstitusi];
+const localAlts = ['Pariwisata & Cagar Budaya Epigrap', 'Institusi dan Pemerintah Epigrap'];
+
+const { cards = defaultCards } = Astro.props;
+---
+
+<section class="usecase-section">
+  <div class="container">
+    <div class="usecase-grid">
+      {cards.map((card, i) => (
+        <div class="usecase-card">
+          <div class="usecase-image">
+            {card.cardImage ? (
+              <img
+                src={urlFor(card.cardImage).width(600).height(400).url()}
+                alt={card.cardTitle}
+                width="600"
+                height="400"
+                loading="lazy"
+              />
+            ) : localImages[i] ? (
+              <Image
+                src={localImages[i]}
+                alt={localAlts[i] || card.cardTitle}
+                width={600}
+                height={400}
+              />
+            ) : null}
+            <div class="overlay"></div>
+          </div>
+          <div class="usecase-content">
+            <h3 class="usecase-title">{card.cardTitle}</h3>
+            <p class="usecase-desc">{card.cardDesc}</p>
+            {card.cardFeatures && card.cardFeatures.length > 0 && (
+              <ul class="usecase-list">
+                {card.cardFeatures.map((f) => (
+                  <li>{f}</li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .usecase-section {
+    padding: 8rem 0;
+    background-color: var(--color-obsidian);
+    background-image: radial-gradient(
+      circle at 90% 10%,
+      rgba(30, 20, 10, 0.4) 0%,
+      transparent 60%
+    );
+  }
+
+  .usecase-grid {
+    display: flex;
+    gap: 3rem;
+    justify-content: center;
+  }
+
+  .usecase-card {
+    flex: 1;
+    background: var(--color-granite);
+    border-radius: 6px;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition:
+      transform 0.4s ease,
+      box-shadow 0.4s ease;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .usecase-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
+    border-color: rgba(197, 160, 89, 0.2);
+  }
+
+  .usecase-image {
+    height: 300px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .usecase-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  .overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(
+      to top,
+      var(--color-granite) 0%,
+      rgba(26, 26, 26, 0.6) 30%,
+      transparent 100%
+    );
+  }
+
+  .usecase-content {
+    padding: 3rem 2.5rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .usecase-title {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    color: var(--color-parchment);
+    position: relative;
+    padding-bottom: 1rem;
+  }
+
+  .usecase-title::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 50px;
+    height: 2px;
+    background-color: var(--color-velvet);
+    transition: width 0.3s;
+  }
+
+  .usecase-card:hover .usecase-title::after {
+    width: 80px;
+    background-color: var(--color-brass);
+  }
+
+  .usecase-desc {
+    color: #999;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+  }
+
+  .usecase-list {
+    margin-top: auto;
+    list-style: none;
+    padding: 0;
+  }
+
+  .usecase-list li {
+    padding-left: 1.5rem;
+    position: relative;
+    color: var(--color-brass);
+    margin-bottom: 0.8rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+  }
+
+  .usecase-list li::before {
+    content: "♦";
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-size: 0.9em;
+  }
+
+  @media (max-width: 850px) {
+    .usecase-grid {
+      flex-direction: column;
+    }
+  }
+</style>

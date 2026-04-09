@@ -1,0 +1,143 @@
+---
+interface Props {
+  dividerText?: string;
+}
+
+const { dividerText = 'Infrastruktur & Gateway Resmi' } = Astro.props;
+---
+<section class="partners-section">
+  <div class="container">
+    <div class="partners-divider">
+      <span class="divider-line"></span>
+      <span class="divider-text">{dividerText}</span>
+      <span class="divider-line"></span>
+    </div>
+    <div class="partners-grid">
+
+      <!-- Arweave -->
+      <div class="partner-logo">
+        <svg viewBox="0 0 120 36" width="120" height="30" fill="currentColor">
+          <circle cx="18" cy="18" r="15" fill="none" stroke="currentColor" stroke-width="2"/>
+          <text x="18" y="24" text-anchor="middle" font-family="Georgia, serif" font-weight="bold" font-size="18" fill="currentColor">a</text>
+          <text x="42" y="24" font-family="Arial, sans-serif" font-weight="bold" font-size="17" fill="currentColor">arweave</text>
+        </svg>
+      </div>
+
+      <!-- Polygon -->
+      <div class="partner-logo">
+        <svg viewBox="0 0 108 30" width="108" height="25">
+          <polygon points="15,2 28,9 28,23 15,30 2,23 2,9" fill="none" stroke="currentColor" stroke-width="2"/>
+          <text x="36" y="22" font-family="Arial, sans-serif" font-weight="bold" font-size="18" fill="currentColor">polygon</text>
+        </svg>
+      </div>
+
+      <!-- Midtrans -->
+      <div class="partner-logo">
+        <svg viewBox="0 0 115 36" width="115" height="30" fill="currentColor">
+          <rect x="2" y="12" width="4.5" height="12" rx="2.25" fill="currentColor"/>
+          <rect x="11" y="5" width="4.5" height="26" rx="2.25" fill="currentColor"/>
+          <rect x="20" y="12" width="4.5" height="12" rx="2.25" fill="currentColor"/>
+          <text x="34" y="24" font-family="system-ui, -apple-system, sans-serif" font-weight="500" font-size="18" fill="currentColor" letter-spacing="0.2">midtrans</text>
+        </svg>
+      </div>
+
+      <!-- QRIS -->
+      <div class="partner-logo">
+        <svg viewBox="0 0 65 30" width="65" height="25">
+          <text x="0" y="22" font-family="Arial, sans-serif" font-weight="900" font-size="22" fill="currentColor" font-style="italic">QRIS</text>
+        </svg>
+      </div>
+
+      <!-- VISA -->
+      <div class="partner-logo">
+        <svg viewBox="0 0 60 30" width="60" height="25">
+          <text x="0" y="24" font-family="Arial, sans-serif" font-weight="900" font-size="24" fill="currentColor" font-style="italic">VISA</text>
+        </svg>
+      </div>
+
+      <!-- Mastercard -->
+      <div class="partner-logo">
+        <svg viewBox="0 0 170 40" width="170" height="30">
+          <circle cx="20" cy="20" r="18" fill="currentColor" fill-opacity="0.6"/>
+          <circle cx="45" cy="20" r="18" fill="currentColor" fill-opacity="0.8"/>
+          <text x="70" y="26" font-family="Arial, sans-serif" font-weight="bold" font-size="18" fill="currentColor">mastercard</text>
+        </svg>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<style>
+  .partners-section {
+    padding: 3rem 0 4rem;
+    background-color: var(--color-obsidian);
+    border-top: 1px solid rgba(255,255,255,0.06);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .partners-divider {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    width: 100%;
+    margin-bottom: 3rem;
+  }
+
+  .divider-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(197, 160, 89, 0.35), transparent);
+  }
+
+  .divider-text {
+    font-size: 0.95rem;
+    letter-spacing: 0.15em;
+    color: var(--color-brass);
+    font-weight: 600;
+    text-transform: uppercase;
+    white-space: nowrap;
+    opacity: 1;
+    flex-shrink: 0;
+  }
+
+  .partners-grid {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 2.5rem;
+  }
+
+  .partner-logo {
+    color: #888;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 135px;
+    transition: color 0.3s ease, transform 0.3s ease;
+  }
+
+  .partner-logo svg {
+    transform: scale(1.3);
+    max-width: 100%;
+  }
+
+  .partner-logo:hover {
+    color: var(--color-brass);
+    opacity: 1;
+    transform: translateY(-2px);
+  }
+
+  @media (max-width: 768px) {
+    .partners-grid {
+      gap: 1.5rem;
+    }
+    .partner-logo {
+      min-width: 100px;
+    }
+    .partner-logo svg {
+      transform: scale(0.85);
+    }
+  }
+</style>

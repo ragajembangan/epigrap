@@ -1,0 +1,681 @@
+---
+import PortalLayout from '../../layouts/PortalLayout.astro';
+import { getPortalBySlug } from '../../lib/sanity';
+import { urlFor } from '../../lib/urlFor';
+import PortableTextRenderer from '../../components/PortableTextRenderer';
+
+export const prerender = false;
+
+const { slug } = Astro.params;
+
+if (!slug) {
+  return Astro.redirect('/404');
+}
+
+const artifact = await getPortalBySlug(slug);
+
+if (!artifact) {
+  return Astro.redirect('/404');
+}
+
+const { 
+  namaArtefak, 
+  temaVisual, 
+  gambarUtama, 
+  slogan, 
+  deskripsiSingkat, 
+  artikelSejarah, 
+  galeriFoto,
+  youtubeUrl,
+  linkDonasiSaweran,
+  etalaseProdukEksternal,
+  sosialMedia,
+  web3Data
+} = artifact;
+
+const hasSocial = sosialMedia && (sosialMedia.facebook || sosialMedia.instagram || sosialMedia.tiktok || sosialMedia.youtube || sosialMedia.twitter);
+
+const themeClass = temaVisual || 'budaya';
+const heroImageUrl = gambarUtama ? urlFor(gambarUtama).width(1400).url() : null;
+
+// Ekstrak YouTube Video ID
+function getYouTubeId(url: string): string | null {
+  const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([a-zA-Z0-9_-]{11})/);
+  return match ? match[1] : null;
+}
+const ytId = youtubeUrl ? getYouTubeId(youtubeUrl) : null;
+
+// Keamanan: Filter URL ketat untuk Donasi dan Etalase
+function isSafeUrl(url: string, allowedDomains: string[]): boolean {
+  if (!url) return false;
+  try {
+    const urlObj = new URL(url);
+    if (urlObj.protocol !== 'https:') return false; // Tutup celah XSS javascript:
+    return allowedDomains.some(domain => urlObj.hostname.endsWith(domain));
+  } catch (e) {
+    return false;
+  }
+}
+
+const safeDonasiLinks = linkDonasiSaweran?.filter((link: any) => isSafeUrl(link.url, ['lynk.id', 'yapp.ink', 'saweria.co', 'tautyn.com'])) || [];
+const safeProdukLinks = etalaseProdukEksternal?.filter((produk: any) => isSafeUrl(produk.url, ['shopee.co.id', 'tokopedia.com', 'tiktok.com', 'wa.me'])) || [];
+
+---
+
+<PortalLayout title={`${namaArtefak} — Epigrap`} description={deskripsiSingkat} theme={themeClass}>
+
+  <!-- 1. HERO SECTION -->
+  <section class="hero">
+    {heroImageUrl ? (
+      <img src={heroImageUrl} alt={namaArtefak} class="hero-bg" />
+    ) : (
+      <div class="hero-bg hero-bg--fallback"></div>
+    )}
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      {slogan && <p class="hero-slogan">{slogan}</p>}
+      <h1 class="hero-title">{namaArtefak}</h1>
+      {deskripsiSingkat && <p class="hero-desc">{deskripsiSingkat}</p>}
+    </div>
+  </section>
+
+  <!-- 2. VIDEO YOUTUBE (di atas artikel) -->
+  {ytId && (
+    <section class="video-section">
+      <div class="video-wrapper">
+        <iframe 
+          src={`https://www.youtube-nocookie.com/embed/${ytId}?rel=0&modestbranding=1&iv_load_policy=3&cc_load_policy=0&disablekb=0`}
+          title={`Video ${namaArtefak}`}
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+          loading="lazy"
+        ></iframe>
+      </div>
+    </section>
+  )}
+
+  <!-- 3. ARTIKEL UTAMA (dengan Read More) -->
+  {artikelSejarah && artikelSejarah.length > 0 && (
+    <section class="artikel">
+      <div class="artikel-box">
+        <div class="artikel-content" id="artikel-content">
+          <PortableTextRenderer content={artikelSejarah} client:idle />
+        </div>
+        <div class="artikel-fade" id="artikel-fade"></div>
+        <button class="artikel-toggle" id="artikel-toggle">
+          <span id="toggle-text">Baca Selengkapnya</span>
+          <svg id="toggle-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+      </div>
+    </section>
+  )}
+
+  <!-- 4. DUKUNGAN & PELESTARIAN (Non-Escrow) -->
+  {(safeDonasiLinks.length > 0 || safeProdukLinks.length > 0) && (
+    <section class="dukungan">
+      <h2 class="section-title">Dukungan & Pelestarian</h2>
+      <div class="section-divider"></div>
+
+      {safeDonasiLinks.length > 0 && (
+        <div class="donasi-buttons">
+          {safeDonasiLinks.map((link: any) => (
+            <a href={link.url} target="_blank" rel="noopener noreferrer" class="donasi-btn">
+              {link.title}
+            </a>
+          ))}
+        </div>
+      )}
+
+      {safeProdukLinks.length > 0 && (
+        <div class="etalase-grid">
+          {safeProdukLinks.map((produk: any) => (
+            <a href={produk.url} target="_blank" rel="noopener noreferrer" class="etalase-card">
+              <div class="etalase-img-wrap">
+                {produk.gambar ? (
+                  <img src={urlFor(produk.gambar).width(400).height(400).url()} alt={produk.namaProduk} loading="lazy" />
+                ) : (
+                  <div class="etalase-placeholder">Foto</div>
+                )}
+              </div>
+              <div class="etalase-info">
+                <h3>{produk.namaProduk}</h3>
+                {produk.harga && <p class="etalase-price">{produk.harga}</p>}
+              </div>
+            </a>
+          ))}
+        </div>
+      )}
+    </section>
+  )}
+
+  <!-- 5. GALERI ARSIP (Klik untuk perbesar) -->
+  {galeriFoto && galeriFoto.length > 0 && (
+    <section class="galeri">
+      <h2 class="section-title">Galeri Arsip Otentik</h2>
+      <div class="section-divider"></div>
+      <div class="galeri-grid">
+        {galeriFoto.map((foto: any, i: number) => (
+          <div class="galeri-item" data-lightbox={urlFor(foto).width(1200).url()} data-caption={foto.caption || ''}>
+            <div class="galeri-img-wrap">
+              <img 
+                src={urlFor(foto).width(600).height(450).url()} 
+                alt={foto.caption || 'Dokumentasi'} 
+                loading="lazy" 
+              />
+              <div class="galeri-zoom-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                  <line x1="11" y1="8" x2="11" y2="14"></line>
+                  <line x1="8" y1="11" x2="14" y2="11"></line>
+                </svg>
+              </div>
+            </div>
+            {foto.caption && <p class="galeri-caption">{foto.caption}</p>}
+          </div>
+        ))}
+      </div>
+    </section>
+  )}
+
+  <!-- LIGHTBOX MODAL -->
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox-close" id="lightbox-close">
+      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+    <img id="lightbox-img" src="" alt="" />
+    <p class="lightbox-caption" id="lightbox-caption"></p>
+  </div>
+
+  <!-- 6. MEDIA SOSIAL -->
+  {hasSocial && (
+    <section class="sosmed">
+      <div class="sosmed-icons">
+        {sosialMedia!.facebook && (
+          <a href={sosialMedia!.facebook} target="_blank" rel="noopener noreferrer" class="sosmed-link" aria-label="Facebook">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          </a>
+        )}
+        {sosialMedia!.instagram && (
+          <a href={sosialMedia!.instagram} target="_blank" rel="noopener noreferrer" class="sosmed-link" aria-label="Instagram">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+          </a>
+        )}
+        {sosialMedia!.tiktok && (
+          <a href={sosialMedia!.tiktok} target="_blank" rel="noopener noreferrer" class="sosmed-link" aria-label="TikTok">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+          </a>
+        )}
+        {sosialMedia!.youtube && (
+          <a href={sosialMedia!.youtube} target="_blank" rel="noopener noreferrer" class="sosmed-link" aria-label="YouTube">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+          </a>
+        )}
+        {sosialMedia!.twitter && (
+          <a href={sosialMedia!.twitter} target="_blank" rel="noopener noreferrer" class="sosmed-link" aria-label="Twitter / X">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </a>
+        )}
+      </div>
+    </section>
+  )}
+
+  <!-- 7. WEB3 PROVENANCE BADGE -->
+  <section class="provenance">
+    <div class="provenance-inner">
+      <div class="provenance-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+        </svg>
+      </div>
+      <h4 class="provenance-label">Blockchain Verified Provenance</h4>
+      <p class="provenance-text">
+        Integritas sejarah artefak ini dikunci abadi secara kriptografis via Jaringan Web3.
+      </p>
+      <span class="provenance-status">STATUS: {web3Data?.mintingStatus || 'PENDING MINT'}</span>
+    </div>
+  </section>
+
+</PortalLayout>
+
+<style>
+  /* ─── HERO ─── */
+  .hero {
+    position: relative;
+    width: 100%;
+    height: 55vh;
+    min-height: 360px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    overflow: hidden;
+  }
+  @media (min-width: 768px) {
+    .hero { height: 88vh; min-height: 500px; align-items: center; }
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 20%;
+    z-index: 0;
+    background-color: var(--color-obsidian);
+  }
+  .hero-bg--fallback { background-color: var(--color-granite); }
+
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(to top, var(--color-obsidian) 0%, rgba(10,10,10,0.5) 40%, rgba(10,10,10,0.1) 100%);
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 0 1.5rem 2rem;
+    max-width: 800px;
+  }
+  @media (min-width: 768px) {
+    .hero-content { padding: 0 2rem; margin-top: 12vh; }
+  }
+
+  .hero-slogan {
+    color: var(--color-brass);
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+  }
+  @media (min-width: 768px) { .hero-slogan { font-size: 1rem; margin-bottom: 1rem; } }
+
+  .hero-title {
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-parchment);
+    line-height: 1.15;
+    text-shadow: 0 4px 30px rgba(0,0,0,0.6);
+  }
+  @media (min-width: 768px) { .hero-title { font-size: 3.75rem; } }
+
+  .hero-desc {
+    color: var(--color-parchment);
+    opacity: 0.8;
+    margin-top: 1rem;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    max-width: 600px;
+    margin-inline: auto;
+  }
+  @media (min-width: 768px) { .hero-desc { font-size: 1.2rem; margin-top: 1.5rem; } }
+
+  /* ─── VIDEO YOUTUBE ─── */
+  .video-section {
+    max-width: 850px;
+    margin: 1.5rem auto;
+    padding: 0 1.5rem;
+  }
+  .video-wrapper {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 */
+    height: 0;
+    overflow: hidden;
+    border-radius: 1rem;
+    border: 1px solid rgba(255,255,255,0.06);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+  }
+  .video-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+
+  /* ─── ARTIKEL ─── */
+  .artikel {
+    max-width: 850px;
+    margin: 1.5rem auto 0;
+    padding: 0 1.5rem;
+    position: relative;
+    z-index: 3;
+  }
+
+  .artikel-box {
+    background: var(--color-granite);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 15px 50px rgba(0,0,0,0.5);
+    position: relative;
+    overflow: hidden;
+  }
+  @media (min-width: 768px) { .artikel-box { padding: 3rem; } }
+
+  .artikel-content {
+    max-height: 300px;
+    overflow: hidden;
+    transition: max-height 0.6s ease;
+  }
+  .artikel-content.expanded { max-height: none; }
+
+  .artikel-fade {
+    position: absolute;
+    bottom: 4rem;
+    left: 0;
+    right: 0;
+    height: 120px;
+    background: linear-gradient(to top, var(--color-granite), transparent);
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+  }
+  .artikel-fade.hidden { opacity: 0; }
+
+  .artikel-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.85rem;
+    margin-top: 0.5rem;
+    background: transparent;
+    border: 1px solid var(--color-brass);
+    border-radius: 0.5rem;
+    color: var(--color-brass);
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 2;
+  }
+  .artikel-toggle:hover { background: var(--color-brass); color: var(--color-obsidian); }
+  .artikel-toggle svg { transition: transform 0.3s ease; }
+  .artikel-toggle.expanded svg { transform: rotate(180deg); }
+
+  /* ─── DUKUNGAN ─── */
+  .dukungan {
+    max-width: 850px;
+    margin: 2.5rem auto;
+    padding: 0 1.5rem;
+  }
+
+  .section-title {
+    font-family: var(--font-heading);
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--color-parchment);
+    text-align: center;
+  }
+  @media (min-width: 768px) { .section-title { font-size: 2rem; } }
+
+  .section-divider {
+    width: 3rem;
+    height: 3px;
+    background: var(--color-brass);
+    margin: 0.75rem auto 2rem;
+    border-radius: 4px;
+  }
+
+  .donasi-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .donasi-btn {
+    display: inline-block;
+    padding: 0.9rem 2.2rem;
+    background-color: var(--color-brass);
+    color: var(--color-obsidian);
+    font-weight: 700;
+    font-size: 0.95rem;
+    border-radius: 100px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 20px rgba(197,160,89,0.15);
+  }
+  .donasi-btn:hover {
+    background-color: var(--color-parchment);
+    box-shadow: 0 0 30px rgba(197,160,89,0.4);
+    transform: translateY(-2px);
+  }
+
+  /* ─── ETALASE ─── */
+  .etalase-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+  @media (min-width: 768px) { .etalase-grid { grid-template-columns: repeat(3, 1fr); gap: 1.5rem; } }
+
+  .etalase-card {
+    display: flex; flex-direction: column;
+    background: var(--color-granite);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 0.75rem; overflow: hidden;
+    text-decoration: none; transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  }
+  .etalase-card:hover { border-color: var(--color-brass); transform: translateY(-3px); }
+
+  .etalase-img-wrap { aspect-ratio: 1; overflow: hidden; background-color: var(--color-obsidian); }
+  .etalase-img-wrap img { width: 100%; height: 100%; object-fit: cover; opacity: 0.9; transition: all 0.5s ease; }
+  .etalase-card:hover .etalase-img-wrap img { opacity: 1; transform: scale(1.05); }
+  .etalase-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: var(--color-parchment); opacity: 0.15; }
+
+  .etalase-info { padding: 1rem; text-align: center; }
+  .etalase-info h3 { font-family: var(--font-heading); font-size: 0.95rem; color: var(--color-parchment); transition: color 0.3s ease; line-height: 1.4; }
+  .etalase-card:hover .etalase-info h3 { color: var(--color-brass); }
+  .etalase-price { color: var(--color-brass); opacity: 0.9; font-size: 0.85rem; margin-top: 0.25rem; }
+
+  /* ─── GALERI (dengan hover zoom icon) ─── */
+  .galeri { max-width: 1000px; margin: 2.5rem auto; padding: 0 1.5rem; }
+  .galeri-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+  @media (min-width: 768px) { .galeri-grid { grid-template-columns: repeat(3, 1fr); gap: 1rem; } }
+
+  .galeri-item {
+    border-radius: 0.5rem;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.06);
+    cursor: pointer;
+    background: var(--color-granite);
+  }
+  .galeri-img-wrap {
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    position: relative;
+  }
+  .galeri-img-wrap img { width: 100%; height: 100%; object-fit: cover; opacity: 0.85; transition: all 0.5s ease; }
+  .galeri-item:hover .galeri-img-wrap img { opacity: 1; transform: scale(1.06); }
+
+  .galeri-caption {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.75rem;
+    color: var(--color-parchment);
+    opacity: 0.6;
+    line-height: 1.4;
+    text-align: center;
+    margin: 0;
+  }
+
+  .galeri-zoom-icon {
+    position: absolute;
+    bottom: 0.5rem;
+    right: 0.5rem;
+    width: 2.2rem;
+    height: 2.2rem;
+    background: rgba(0,0,0,0.6);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-brass);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .galeri-item:hover .galeri-zoom-icon { opacity: 1; }
+
+  /* ─── LIGHTBOX ─── */
+  .lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(0,0,0,0.92);
+    backdrop-filter: blur(10px);
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 2rem;
+  }
+  .lightbox.active { display: flex; }
+
+  .lightbox-close {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    background: none;
+    border: none;
+    color: var(--color-parchment);
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+    z-index: 10;
+  }
+  .lightbox-close:hover { opacity: 1; }
+
+  .lightbox img {
+    max-width: 90vw;
+    max-height: 80vh;
+    object-fit: contain;
+    border-radius: 0.5rem;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+  }
+
+  .lightbox-caption {
+    color: var(--color-parchment);
+    opacity: 0.7;
+    font-size: 0.85rem;
+    margin-top: 1rem;
+    text-align: center;
+    font-style: italic;
+  }
+
+  /* ─── MEDIA SOSIAL ─── */
+  .sosmed {
+    padding: 2rem 1.5rem 0;
+  }
+  .sosmed-icons {
+    display: flex;
+    justify-content: center;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+  }
+  .sosmed-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: var(--color-granite);
+    color: var(--color-parchment);
+    opacity: 0.6;
+    transition: all 0.3s ease;
+    text-decoration: none;
+  }
+  .sosmed-link:hover {
+    opacity: 1;
+    color: var(--color-brass);
+    border-color: var(--color-brass);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(197,160,89,0.2);
+  }
+
+  /* ─── PROVENANCE ─── */
+  .provenance {
+    border-top: 1px solid var(--color-velvet);
+    background: var(--color-granite);
+    padding: 2.5rem 1.5rem;
+    margin-top: 2rem;
+  }
+  .provenance-inner {
+    display: flex; flex-direction: column; align-items: center; text-align: center;
+    opacity: 0.7; transition: opacity 0.3s ease;
+  }
+  .provenance-inner:hover { opacity: 1; }
+  .provenance-icon {
+    width: 3.5rem; height: 3.5rem; border-radius: 50%;
+    background: var(--color-obsidian); border: 2px solid var(--color-brass);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 1rem; box-shadow: 0 0 15px rgba(197,160,89,0.1);
+  }
+  .provenance-icon svg { color: var(--color-brass); }
+  .provenance-label { font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--color-brass); font-weight: 700; margin-bottom: 0.5rem; }
+  .provenance-text { font-size: 0.8rem; color: var(--color-parchment); opacity: 0.6; max-width: 360px; line-height: 1.6; }
+  .provenance-status { display: inline-block; margin-top: 0.75rem; font-family: monospace; font-size: 0.65rem; color: var(--color-parchment); opacity: 0.4; background: var(--color-obsidian); padding: 0.25rem 0.75rem; border-radius: 4px; }
+</style>
+
+<script>
+  // ─── Read More Toggle ───
+  const content = document.getElementById('artikel-content');
+  const fade = document.getElementById('artikel-fade');
+  const btn = document.getElementById('artikel-toggle');
+  const btnText = document.getElementById('toggle-text');
+
+  if (btn && content && fade) {
+    btn.addEventListener('click', () => {
+      const isExpanded = content.classList.contains('expanded');
+      if (isExpanded) {
+        content.classList.remove('expanded');
+        fade.classList.remove('hidden');
+        btn.classList.remove('expanded');
+        if (btnText) btnText.textContent = 'Baca Selengkapnya';
+        content.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else {
+        content.classList.add('expanded');
+        fade.classList.add('hidden');
+        btn.classList.add('expanded');
+        if (btnText) btnText.textContent = 'Tutup Artikel';
+      }
+    });
+  }
+
+  // ─── Lightbox Gallery ───
+  const lightbox = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lightbox-img') as HTMLImageElement;
+  const lbCaption = document.getElementById('lightbox-caption');
+  const lbClose = document.getElementById('lightbox-close');
+
+  document.querySelectorAll('.galeri-item[data-lightbox]').forEach((item) => {
+    item.addEventListener('click', () => {
+      const src = (item as HTMLElement).dataset.lightbox || '';
+      const caption = (item as HTMLElement).dataset.caption || '';
+      if (lbImg) lbImg.src = src;
+      if (lbCaption) lbCaption.textContent = caption;
+      lightbox?.classList.add('active');
+    });
+  });
+
+  lbClose?.addEventListener('click', () => lightbox?.classList.remove('active'));
+  lightbox?.addEventListener('click', (e) => {
+    if (e.target === lightbox) lightbox.classList.remove('active');
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') lightbox?.classList.remove('active');
+  });
+</script>

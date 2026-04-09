@@ -1,0 +1,175 @@
+---
+
+---
+
+<header id="main-navbar" class="navbar">
+  <div class="container nav-container">
+    <a href="/" class="logo">EPIGRAP</a>
+
+    <nav id="nav-menu" class="nav-menu">
+      <a href="/#filosofi" class="nav-link">Filosofi</a>
+      <a href="/#solusi" class="nav-link">Solusi</a>
+      <a href="/demo" class="nav-link">Demo</a>
+      <a href="/reservasi" class="nav-link">Reservasi</a>
+      <a href="/dasbor" class="btn-primary">Login</a>
+    </nav>
+
+    <button
+      id="hamburger-btn"
+      class="hamburger"
+      aria-label="Menu"
+      aria-expanded="false"
+    >
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </button>
+  </div>
+</header>
+
+<style>
+  .navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    padding: 1.5rem 0;
+    transition: all 0.3s ease;
+    background-color: transparent;
+  }
+
+  .navbar.scrolled {
+    background-color: rgba(18, 18, 18, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 1rem 0;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+  }
+
+  .nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .logo {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-brass);
+    letter-spacing: 2px;
+  }
+
+  .nav-menu {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .nav-link {
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .nav-link:hover {
+    color: var(--color-brass);
+  }
+
+  .btn-primary {
+    background-color: var(--color-velvet);
+    color: var(--color-parchment);
+    padding: 0.6rem 1.2rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition:
+      background-color 0.2s,
+      transform 0.2s;
+  }
+
+  .btn-primary:hover {
+    background-color: #9a1421;
+    transform: translateY(-2px);
+  }
+
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 6px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    z-index: 1001;
+  }
+
+  .hamburger .bar {
+    width: 25px;
+    height: 2px;
+    background-color: var(--color-parchment);
+    transition: all 0.3s;
+  }
+
+  @media (max-width: 768px) {
+    .hamburger {
+      display: flex;
+    }
+
+    .nav-menu {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      height: 100vh;
+      width: 80%;
+      max-width: 400px;
+      background-color: var(--color-granite);
+      flex-direction: column;
+      justify-content: center;
+      gap: 2rem;
+      transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: -5px 0 15px rgba(0, 0, 0, 0.5);
+    }
+
+    .nav-menu.active {
+      right: 0;
+    }
+
+    .hamburger.active .bar:nth-child(1) {
+      transform: translateY(8px) rotate(45deg);
+    }
+    .hamburger.active .bar:nth-child(2) {
+      opacity: 0;
+    }
+    .hamburger.active .bar:nth-child(3) {
+      transform: translateY(-8px) rotate(-45deg);
+    }
+  }
+</style>
+
+<script>
+  // Navbar scroll effect
+  const navbar = document.getElementById("main-navbar");
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > 50) {
+      navbar?.classList.add("scrolled");
+    } else {
+      navbar?.classList.remove("scrolled");
+    }
+  });
+
+  // Mobile menu toggle
+  const hamburger = document.getElementById("hamburger-btn");
+  const navMenu = document.getElementById("nav-menu");
+
+  hamburger?.addEventListener("click", () => {
+    hamburger.classList.toggle("active");
+    navMenu?.classList.toggle("active");
+
+    const isExpanded = hamburger.getAttribute("aria-expanded") === "true";
+    hamburger.setAttribute("aria-expanded", String(!isExpanded));
+  });
+</script>

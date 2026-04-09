@@ -1,0 +1,240 @@
+---
+import { Image } from "astro:assets";
+import { urlFor } from '../../lib/urlFor';
+import imgPrasastiDieng from "../../assets/prasasti_dieng1.jpg";
+import imgPrasastiEpigrap from "../../assets/prasasti_epigrap.jpg";
+
+interface Props {
+  title?: string;
+  titleAccent?: string;
+  desc1?: string;
+  desc2?: string;
+  imageBefore?: any;
+  labelBefore?: string;
+  imageAfter?: any;
+  labelAfter?: string;
+}
+
+const {
+  title = 'Fisik yang Kokoh Tidak Menjamin',
+  titleAccent = 'Sejarah yang Utuh.',
+  desc1 = 'Ribuan situs bersejarah, monumen publik, dan plakat peresmian tergerus waktu. Informasi tentang siapa mereka, nilai sejarah, dan karya seni yang ditinggalkan—semuanya perlahan pudar menjadi batu bisu.',
+  desc2 = 'Kami percaya bahwa setiap nama memiliki cerita yang layak diabadikan lintas generasi, melampaui pelapukan material.',
+  imageBefore,
+  labelBefore = 'Prasasti Statis',
+  imageAfter,
+  labelAfter = 'Prasasti Digital Interaktif',
+} = Astro.props;
+
+const hasCustomImageBefore = !!imageBefore;
+const hasCustomImageAfter = !!imageAfter;
+---
+
+<section class="problem-section" id="filosofi">
+  <div class="container problem-container">
+    <div class="problem-text">
+      <h2 class="section-title">
+        {title} <span class="text-velvet"
+          >{titleAccent}</span>
+      </h2>
+      <p class="section-desc">
+        {desc1}
+      </p>
+      <p class="section-desc">
+        {desc2}
+      </p>
+    </div>
+    <div class="problem-visual">
+      <div class="image-box before">
+        {hasCustomImageBefore ? (
+          <img
+            src={urlFor(imageBefore).width(600).height(600).url()}
+            alt="Prasasti Fisik Sejarah"
+            width="600"
+            height="600"
+            loading="lazy"
+          />
+        ) : (
+          <Image
+            src={imgPrasastiDieng}
+            alt="Prasasti Fisik Sejarah"
+            width={600}
+            height={600}
+            format="webp"
+          />
+        )}
+        <div class="label label-before">{labelBefore}</div>
+      </div>
+
+      <div class="image-box after">
+        {hasCustomImageAfter ? (
+          <img
+            src={urlFor(imageAfter).width(600).height(750).url()}
+            alt="Arsip Digital Phygital Epigrap"
+            width="600"
+            height="750"
+            loading="lazy"
+          />
+        ) : (
+          <Image
+            src={imgPrasastiEpigrap}
+            alt="Arsip Digital Phygital Epigrap"
+            width={600}
+            height={750}
+            format="webp"
+          />
+        )}
+        <div class="label label-after">{labelAfter}</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .problem-section {
+    padding: 8rem 0;
+    background-color: var(--color-obsidian);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .problem-section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      transparent,
+      rgba(197, 160, 89, 0.3),
+      transparent
+    );
+  }
+
+  .problem-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .section-title {
+    font-size: clamp(2rem, 4vw, 3rem);
+    margin-bottom: 2rem;
+  }
+
+  .text-velvet {
+    color: var(--color-velvet);
+  }
+
+  .section-desc {
+    font-size: 1.1rem;
+    color: #aaa;
+    margin-bottom: 1.5rem;
+    line-height: 1.8;
+  }
+
+  .problem-visual {
+    position: relative;
+    height: 500px;
+    width: 100%;
+  }
+
+  .image-box {
+    position: absolute;
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+    transition: transform 0.5s ease;
+  }
+
+  .image-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: grayscale(40%) sepia(20%);
+    transition: filter 0.5s;
+  }
+
+  .image-box:hover img {
+    filter: none;
+  }
+
+  .image-box.before {
+    width: 60%;
+    height: 350px;
+    top: 0;
+    left: 0;
+    z-index: 1;
+  }
+
+  .image-box.after {
+    width: 65%;
+    height: 400px;
+    bottom: 0;
+    right: 0;
+    z-index: 2;
+    border: 1px solid rgba(197, 160, 89, 0.4);
+  }
+
+  .label {
+    position: absolute;
+    top: 0.8rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: max-content;
+    background: rgba(10, 10, 10, 0.85);
+    padding: 0.6rem 1.2rem;
+    font-family: var(--font-heading);
+    color: var(--color-brass);
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(197, 160, 89, 0.3);
+    border-radius: 4px;
+    z-index: 10;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+  }
+
+  @media (max-width: 900px) {
+    .problem-section {
+      overflow: visible;
+    }
+    .problem-container {
+      grid-template-columns: 1fr;
+      text-align: center;
+    }
+
+    .problem-visual {
+      position: relative;
+      height: auto;
+      margin-top: 2rem;
+      max-width: 400px;
+      margin-inline: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .image-box,
+    .image-box.before,
+    .image-box.after {
+      position: relative;
+      width: 100%;
+      height: auto;
+      top: auto;
+      bottom: auto;
+      left: auto;
+      right: auto;
+      z-index: 1;
+    }
+
+    .image-box img {
+      height: auto;
+      aspect-ratio: 4/3;
+    }
+  }
+</style>

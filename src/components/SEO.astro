@@ -1,0 +1,38 @@
+---
+export interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+}
+
+const {
+  title = "Epigrap — Arsip Permanen",
+  description = "Solusi pengarsipan pusaka dan memori keluarga lintas generasi dengan teknologi Phygital dan Blockchain.",
+  image = "/og-image.png",
+} = Astro.props;
+
+// Construct an absolute URL for the OG image
+const baseUrl = Astro.site ? new URL(Astro.site).origin : Astro.url.origin;
+const ogImageUrl = new URL(image, baseUrl).toString();
+---
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="canonical" href={Astro.url} />
+
+<title>{title}</title>
+<meta name="description" content={description} />
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content={Astro.url} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={ogImageUrl} />
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={Astro.url} />
+<meta property="twitter:title" content={title} />
+<meta property="twitter:description" content={description} />
+<meta property="twitter:image" content={ogImageUrl} />

@@ -1,0 +1,262 @@
+---
+import '../styles/global.css';
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Epigrap — Preserving Heritage</title>
+  <meta name="description" content="A bridge between physical monuments and digital eternity. Coming soon." />
+  
+  <!-- Preload Font / Image -->
+  <link rel="preload" as="image" href="/bg-eclipse.png" />
+</head>
+<body class="teaser-body">
+  
+  <main class="teaser-wrapper">
+    <!-- Background Image -->
+    <img src="/bg-eclipse.png" alt="Golden Solar Eclipse Background" class="bg-eclipse" />
+    
+    <!-- Subtle Overlay in case the center isn't 100% black -->
+    <div class="bg-overlay"></div>
+
+    <!-- Center Content inside the Ring -->
+    <div class="content-core">
+      <h1 class="brand-title">EPIGRAP</h1>
+      <p class="brand-subtitle">PRESERVING HERITAGE</p>
+      
+      <!-- Waitlist / Newsletter Section -->
+      <div class="waitlist-container">
+        <p class="waitlist-text">Coming soon...</p>
+        <form class="waitlist-form" onsubmit="event.preventDefault(); alert('Terima kasih! Alamat email Anda telah tercatat.');">
+          <input type="email" placeholder="Enter your email" required class="waitlist-input" />
+          <button type="submit" class="waitlist-button">Notify Me</button>
+        </form>
+      </div>
+
+    </div>
+
+    <!-- Social Links (Absolut Bottom) -->
+    <div class="social-footer">
+      <div class="sosmed-icons">
+        <a href="https://instagram.com/epigrap" target="_blank" rel="noopener noreferrer" class="sosmed-link" aria-label="Instagram">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+        </a>
+        <a href="https://wa.me/628000000000" target="_blank" rel="noopener noreferrer" class="sosmed-link" aria-label="WhatsApp">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12.031 0C5.385 0 .003 5.381.003 12.028c0 2.128.553 4.2 1.605 6.02L.001 24l6.113-1.603a11.967 11.967 0 005.917 1.564v.001c6.645 0 12.026-5.381 12.026-12.028S18.675 0 12.031 0zM12.031 21.956a9.924 9.924 0 01-5.06-1.378l-.364-.216-3.76 .986.997-3.666-.237-.378A9.917 9.917 0 012.035 12.03C2.035 6.51 6.515 2.03 12.031 2.03c5.517 0 9.998 4.48 9.998 10 0 5.52-4.481 10-10.001 10h.003L12.03 21.956zm5.492-7.525c-.301-.15-1.782-.881-2.059-.982-.277-.1-.478-.15-.68.151-.201.302-.779.982-.955 1.184-.176.202-.352.227-.654.076-.302-.151-1.272-.469-2.421-1.49-.894-.794-1.498-1.776-1.674-2.078-.176-.302-.019-.465.132-.616.136-.135.302-.353.453-.53.151-.176.202-.302.302-.503.1-.202.05-.378-.025-.53-.076-.151-.68-1.637-.932-2.241-.252-.584-.508-.504-.68-.513-.16-.009-.36-.011-.563-.011-.202 0-.528.076-.804.378-.277.302-1.056 1.033-1.056 2.518 0 1.485 1.082 2.92 1.233 3.121.151.202 2.128 3.25 5.155 4.557.72.31 1.28.496 1.716.635.723.231 1.382.198 1.898.12.576-.088 1.782-.728 2.033-1.432.252-.704.252-1.309.176-1.432-.075-.124-.277-.198-.578-.349z"/></svg>
+        </a>
+      </div>
+    </div>
+  </main>
+
+</body>
+</html>
+
+<style>
+  /* Base Setup */
+  :root {
+    --color-obsidian: #0D0E10;
+    --color-brass: #C5A059;
+    --color-parchment: #F4EEDF;
+    --font-heading: 'Cinzel', 'Playfair Display', serif;
+    --font-body: 'Inter', 'Outfit', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden; /* Mencegah scrolling */
+    background-color: var(--color-obsidian);
+    font-family: var(--font-body);
+  }
+
+  .teaser-wrapper {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Latar Gambar Gerhana Emas */
+  .bg-eclipse {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    z-index: 1;
+    opacity: 0.95;
+    animation: pulseGlow 8s ease-in-out infinite alternate;
+  }
+
+  /* Overlay Hitam Halus agar teks selalu aman */
+  .bg-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background: radial-gradient(circle at center, rgba(13,14,16,0.3) 0%, rgba(13,14,16,0.7) 60%, rgba(13,14,16,0.9) 100%);
+  }
+
+  /* Kotak Konten Utama di Tengah */
+  .content-core {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Memberi ruang ekstra untuk pas di tengah area hitam gerhana */
+    padding: 2rem;
+  }
+
+  .brand-title {
+    font-family: var(--font-heading);
+    font-size: 4rem;
+    font-weight: 700;
+    letter-spacing: 0.25em;
+    color: var(--color-brass);
+    text-shadow: 0 4px 30px rgba(197,160,89, 0.4);
+    margin-bottom: 0.5rem;
+    margin-right: -0.25em; /* Compensate for letter spacing */
+    animation: fadeUp 1s ease-out forwards;
+  }
+
+  .brand-subtitle {
+    font-size: 0.85rem;
+    letter-spacing: 0.4em;
+    color: var(--color-parchment);
+    text-transform: uppercase;
+    font-weight: 500;
+    margin-right: -0.4em; /* Compensate */
+    opacity: 0;
+    animation: fadeUp 1s ease-out 0.3s forwards;
+  }
+
+  /* Form Tunggu / Waitlist */
+  .waitlist-container {
+    margin-top: 3rem;
+    opacity: 0;
+    animation: fadeUp 1s ease-out 0.6s forwards;
+  }
+
+  .waitlist-text {
+    font-size: 0.85rem;
+    color: var(--color-parchment);
+    opacity: 0.6;
+    margin-bottom: 1rem;
+    font-style: italic;
+  }
+
+  .waitlist-form {
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    max-width: 400px;
+    margin: 0 auto;
+    position: relative;
+    border-radius: 100px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(197, 160, 89, 0.3);
+    overflow: hidden;
+    backdrop-filter: blur(5px);
+    transition: border-color 0.3s ease;
+  }
+  .waitlist-form:focus-within {
+    border-color: var(--color-brass);
+    box-shadow: 0 0 20px rgba(197,160,89,0.2);
+  }
+
+  .waitlist-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: var(--color-parchment);
+    padding: 1rem 1.5rem;
+    font-size: 0.9rem;
+    outline: none;
+    width: 100%;
+  }
+  .waitlist-input::placeholder { color: rgba(244, 238, 223, 0.4); }
+
+  .waitlist-button {
+    background: var(--color-brass);
+    color: var(--color-obsidian);
+    border: none;
+    padding: 0 1.5rem;
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  .waitlist-button:hover {
+    background: var(--color-parchment);
+  }
+
+  /* Footer Sosmed (Meniru Portal) */
+  .social-footer {
+    position: absolute;
+    bottom: 2.5rem;
+    width: 100%;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    opacity: 0;
+    animation: fadeUp 1s ease-out 0.9s forwards;
+  }
+  .sosmed-icons {
+    display: flex;
+    gap: 1.25rem;
+  }
+  .sosmed-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(13,14,16, 0.5);
+    backdrop-filter: blur(5px);
+    color: var(--color-parchment);
+    opacity: 0.6;
+    transition: all 0.3s ease;
+    text-decoration: none;
+  }
+  .sosmed-link:hover {
+    opacity: 1;
+    color: var(--color-brass);
+    border-color: var(--color-brass);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(197,160,89,0.2);
+  }
+
+  /* --- Keyframe Animations --- */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes pulseGlow {
+    from { transform: scale(1); filter: contrast(1); }
+    to { transform: scale(1.02); filter: contrast(1.1) brightness(1.05); }
+  }
+
+  /* Responsiveness */
+  @media (max-width: 768px) {
+    .brand-title { font-size: 2.5rem; }
+    .brand-subtitle { font-size: 0.7rem; }
+    .waitlist-form { max-width: 90vw; flex-direction: column; border-radius: 12px; background: transparent; border: none; gap: 0.5rem; }
+    .waitlist-input { border-radius: 12px; border: 1px solid rgba(197, 160, 89, 0.3); background: rgba(0,0,0,0.5); }
+    .waitlist-button { border-radius: 12px; padding: 1rem; }
+  }
+</style>
