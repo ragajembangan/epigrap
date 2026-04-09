@@ -253,6 +253,12 @@ import '../styles/global.css';
 
   /* Responsiveness */
   @media (max-width: 768px) {
+    html, body { background-color: #000; } /* Ensure pure black to blend with image edge */
+    .bg-eclipse { 
+      object-fit: contain; 
+      width: 120%; /* Optional: Make it slightly larger so it doesn't look too tiny, but still fits */
+      left: -10%;
+    }
     .brand-title { font-size: 2.5rem; }
     .brand-subtitle { font-size: 0.7rem; }
     .waitlist-form { max-width: 90vw; flex-direction: column; border-radius: 12px; background: transparent; border: none; gap: 0.5rem; }
