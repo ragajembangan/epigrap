@@ -251,46 +251,69 @@ import '../styles/global.css';
     to { transform: scale(1.02); filter: contrast(1.1) brightness(1.05); }
   }
 
+  @keyframes pulseGlowMobile {
+    from { transform: scale(1.2); filter: contrast(1); }
+    to { transform: scale(1.22); filter: contrast(1.1) brightness(1.05); }
+  }
+
   /* Responsiveness */
   @media (max-width: 768px) {
     html, body {
       background-color: #000;
-      height: 100dvh; /* Mencegah footer tenggelam oleh UI browser mobile */
+      height: 100%;
     }
     .teaser-wrapper {
-      height: 100dvh;
+      position: relative;
+      min-height: 100dvh;
       display: flex;
       flex-direction: column;
       justify-content: center;
+      align-items: center;
+      overflow: hidden;
     }
     .bg-eclipse {
-      object-fit: contain; /* Menjaga seluruh cincin terlihat */
-      width: 100vw;
-      height: 100dvh;
-      left: 0;
-      top: 0;
       position: absolute;
+      top: 15vh;
+      height: 70vh;
+      width: 100%;
+      object-fit: cover;
+      object-position: center center;
+      /* Matikan animasi desktop dan gunakan animasi mobile */
+      animation: pulseGlowMobile 8s ease-in-out infinite alternate;
+      -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+      mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
     }
     .content-core {
-      padding: 0 1.5rem;
       position: relative;
       z-index: 10;
-      /* Memisahkan teks dan form agar tidak menumpuk tabrakan dengan cincin */
-      margin-top: -10vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 0 1rem;
+      margin-top: 0; /* Pastikan center */
     }
     .brand-title { 
-      font-size: 2.2rem; /* Diperkecil agar muat di tengah cincin */
-      letter-spacing: 0.15em;
+      font-size: 2.2rem; 
+      letter-spacing: 0.25em;
+      margin: 0;
     }
     .brand-subtitle { 
       font-size: 0.65rem; 
-      letter-spacing: 0.25em; 
+      letter-spacing: 0.3em; 
+      margin-bottom: 1.5rem; /* Jarak rapat ke form */
     }
     .waitlist-container {
-      margin-top: 25vh; /* Menekan form jauh ke bawah agar berada di luar / di bawah cincin */
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 0;
     }
     .waitlist-form { 
-      max-width: 100%; 
+      width: 60%; /* Menyempitkan agar muat di dalam lingkaran */
+      max-width: 220px;
       flex-direction: column; 
       border-radius: 12px; 
       background: transparent; 
@@ -302,14 +325,20 @@ import '../styles/global.css';
       border: 1px solid rgba(197, 160, 89, 0.4); 
       background: rgba(0,0,0,0.7); 
       text-align: center;
+      width: 100%;
+      padding: 0.8rem 1rem;
+      font-size: 0.8rem;
     }
     .waitlist-button { 
       border-radius: 12px; 
-      padding: 1rem; 
+      padding: 0.8rem; 
+      width: 100%;
+      font-size: 0.75rem;
     }
     .social-footer {
-      bottom: 1.5rem; /* Dinaikkan sedikit agar tidak tertutup sistem navigasi HP */
+      bottom: 2rem;
       position: absolute;
+      z-index: 20;
     }
   }
 </style>
