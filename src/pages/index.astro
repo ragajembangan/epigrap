@@ -29,10 +29,12 @@ import '../styles/global.css';
       
       <!-- Waitlist / Newsletter Section -->
       <div class="waitlist-container">
-        <p class="waitlist-text">Coming soon...</p>
-        <form class="waitlist-form" onsubmit="event.preventDefault(); alert('Terima kasih! Alamat email Anda telah tercatat.');">
-          <input type="email" placeholder="Enter your email" required class="waitlist-input" />
-          <button type="submit" class="waitlist-button">Notify Me</button>
+        <p class="waitlist-text" id="waitlist-status">Coming soon...</p>
+        <form class="waitlist-form" id="waitlist-form" action="https://formspree.io/f/xykbarvz" method="POST">
+          <!-- Honeypot anti-spam: bot akan mengisi ini, manusia tidak melihatnya -->
+          <input type="text" name="_gotcha" style="display:none !important" tabindex="-1" autocomplete="off" />
+          <input type="email" name="email" placeholder="Enter your email" required class="waitlist-input" />
+          <button type="submit" class="waitlist-button" id="notify-btn">Notify Me</button>
         </form>
       </div>
 
@@ -40,6 +42,52 @@ import '../styles/global.css';
 
     <!-- Social Links (Absolut Bottom) -->
     <div class="social-footer">
+
+<script>
+  const form = document.getElementById('waitlist-form') as HTMLFormElement | null;
+  const btn = document.getElementById('notify-btn') as HTMLButtonElement | null;
+  const status = document.getElementById('waitlist-status') as HTMLElement | null;
+  let lastSubmit = 0;
+
+  if (form && btn && status) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      // Rate limiting: 10 detik antara submit
+      const now = Date.now();
+      if (now - lastSubmit < 10000) {
+        status.textContent = 'Please wait a moment...';
+        status.style.color = '#e8a838';
+        return;
+      }
+      lastSubmit = now;
+
+      btn.disabled = true;
+      btn.textContent = 'Sending...';
+
+      try {
+        const res = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { 'Accept': 'application/json' }
+        });
+
+        if (res.ok) {
+          status.textContent = '✓ Thank you! We\'ll notify you at launch.';
+          status.style.color = '#C5A059';
+          form.style.display = 'none';
+        } else {
+          throw new Error('Failed');
+        }
+      } catch (err) {
+        status.textContent = 'Something went wrong. Please try again.';
+        status.style.color = '#e85050';
+        btn.disabled = false;
+        btn.textContent = 'Notify Me';
+      }
+    });
+  }
+</script>
       <div class="sosmed-icons">
         <a href="https://instagram.com/epigrap" target="_blank" rel="noopener noreferrer" class="sosmed-link" aria-label="Instagram">
           <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
@@ -264,9 +312,8 @@ import '../styles/global.css';
     }
     .teaser-wrapper {
       position: relative;
-      min-height: 100dvh;
+      height: 100dvh;
       display: flex;
-      flex-direction: column;
       justify-content: center;
       align-items: center;
       overflow: hidden;
@@ -336,8 +383,8 @@ import '../styles/global.css';
       font-size: 0.75rem;
     }
     .social-footer {
-      bottom: 2rem;
       position: absolute;
+      bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
       z-index: 20;
     }
   }
