@@ -18,7 +18,7 @@ import '../styles/global.css';
   
   <main class="teaser-wrapper">
     <!-- Background Image -->
-    <img src="/bg-eclipse.webp" alt="Golden Solar Eclipse Background" class="bg-eclipse" />
+    <img src="/bg-eclipse.webp" alt="Golden Solar Eclipse Background" class="bg-eclipse" fetchpriority="high" decoding="sync" />
     
     <!-- Subtle Overlay in case the center isn't 100% black -->
     <div class="bg-overlay"></div>
@@ -143,7 +143,7 @@ import '../styles/global.css';
     object-position: center;
     z-index: 1;
     opacity: 0.95;
-    animation: pulseGlow 8s ease-in-out infinite alternate;
+    animation: pulseGlow 8s ease-in-out 0.5s infinite alternate;
   }
 
   /* Overlay Hitam Halus agar teks selalu aman */
@@ -327,7 +327,7 @@ import '../styles/global.css';
       object-fit: cover;
       object-position: center center;
       /* Matikan animasi desktop dan gunakan animasi mobile */
-      animation: pulseGlowMobile 8s ease-in-out infinite alternate;
+      animation: pulseGlowMobile 8s ease-in-out 0.5s infinite alternate;
       -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
       mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
     }
