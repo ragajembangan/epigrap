@@ -1,18 +1,17 @@
 ---
 import PortalLayout from '../../layouts/PortalLayout.astro';
-import { getPortalBySlug } from '../../lib/sanity';
+import { getPortalBySlug, getAllPortalSlugs } from '../../lib/sanity';
 import { urlFor } from '../../lib/urlFor';
 import PortableTextRenderer from '../../components/PortableTextRenderer';
 
-export const prerender = false;
+export async function getStaticPaths() {
+  const slugs = await getAllPortalSlugs();
+  return slugs.map(({ slug }) => ({ params: { slug } }));
+}
 
 const { slug } = Astro.params;
 
-if (!slug) {
-  return Astro.redirect('/404');
-}
-
-const artifact = await getPortalBySlug(slug);
+const artifact = await getPortalBySlug(slug!);
 
 if (!artifact) {
   return Astro.redirect('/404');
@@ -61,6 +60,7 @@ const safeDonasiLinks = linkDonasiSaweran?.filter((link: any) => isSafeUrl(link.
 const safeProdukLinks = etalaseProdukEksternal?.filter((produk: any) => isSafeUrl(produk.url, ['shopee.co.id', 'tokopedia.com', 'tiktok.com', 'wa.me'])) || [];
 
 ---
+
 
 <PortalLayout title={`${namaArtefak} — Epigrap`} description={deskripsiSingkat} theme={themeClass}>
 

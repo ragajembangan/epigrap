@@ -208,6 +208,11 @@ export async function getPortalBySlug(slug: string): Promise<Artifact | null> {
   return await sanityClient.fetch(queries.artifactBySlug, { slug })
 }
 
+// Call ini di getStaticPaths() untuk daftarkan semua slug portal
+export async function getAllPortalSlugs(): Promise<{ slug: string }[]> {
+  return await sanityClient.fetch(`*[_type == "artifact" && defined(slugQR.current)]{ "slug": slugQR.current }`)
+}
+
 // Call ini di index.astro untuk fetch konten Homepage dari CMS
 export async function getHomepage(): Promise<Homepage | null> {
   return await sanityClient.fetch(queries.homepage)
