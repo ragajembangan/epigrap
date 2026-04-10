@@ -8,10 +8,18 @@ import PortableTextRenderer from '../../components/PortableTextRenderer';
 export const prerender = false;
 
 const { slug } = Astro.params;
+console.log(`[Portal SSR] Slug requested: "${slug}"`);
 
-const artifact = await getPortalBySlug(slug!);
+let artifact;
+try {
+  artifact = await getPortalBySlug(slug!);
+  console.log(`[Portal SSR] Query result: ${artifact ? artifact.namaArtefak : 'NULL'}`);
+} catch (err) {
+  console.error(`[Portal SSR] Sanity fetch error:`, err);
+}
 
 if (!artifact) {
+  console.warn(`[Portal SSR] Artifact not found for slug "${slug}", redirecting to /404`);
   return Astro.redirect('/404');
 }
 
