@@ -1,13 +1,11 @@
 ---
 import PortalLayout from '../../layouts/PortalLayout.astro';
-import { getPortalBySlug, getAllPortalSlugs } from '../../lib/sanity';
+import { getPortalBySlug } from '../../lib/sanity';
 import { urlFor } from '../../lib/urlFor';
 import PortableTextRenderer from '../../components/PortableTextRenderer';
 
-export async function getStaticPaths() {
-  const slugs = await getAllPortalSlugs();
-  return slugs.map(({ slug }) => ({ params: { slug } }));
-}
+// SSR: render halaman ini secara on-demand, bukan saat build
+export const prerender = false;
 
 const { slug } = Astro.params;
 

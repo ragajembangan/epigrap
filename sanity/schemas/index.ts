@@ -4,5 +4,6 @@ import { artifact } from './artifact'
 import { formField } from './formField'
 import { siteConfig } from './siteConfig'
 import { homepage } from './homepage'
+import { demoGallery } from './demoGallery'
 
-export const schemaTypes = [agen, client, artifact, formField, siteConfig, homepage]
+export const schemaTypes = [agen, client, artifact, formField, siteConfig, homepage, demoGallery]

@@ -24,6 +24,15 @@ export const structure: StructureResolver = (S) =>
             .documentId('homepage')
             .title('Edit Halaman Utama')
         ),
+      // 0b. Halaman Demo (Singleton — edit galeri purwarupa)
+      S.listItem()
+        .title('Halaman Demo (Galeri Purwarupa)')
+        .child(
+          S.editor()
+            .schemaType('demoGallery')
+            .documentId('demoGallery')
+            .title('Edit Halaman Demo')
+        ),
       S.divider(),
 
       // 1. Data Utama (Langsung tampil di luar agar tidak perlu klik folder)

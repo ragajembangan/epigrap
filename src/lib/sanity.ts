@@ -147,6 +147,30 @@ export interface Homepage {
   partnersDividerText?: string;
 }
 
+export interface DemoGalleryItem {
+  _key: string;
+  itemTitle: string;
+  itemDescription: string;
+  itemImage?: any;
+  itemImageUrl?: string;
+  itemUrl: string;
+}
+
+export interface DemoGallerySector {
+  _key: string;
+  sectorTitle: string;
+  sectorIcon?: string;
+  items: DemoGalleryItem[];
+}
+
+export interface DemoGallery {
+  _id: string;
+  pageTitle?: string;
+  pageTitleAccent?: string;
+  pageDescription?: string;
+  sectors?: DemoGallerySector[];
+}
+
 // ─── GROQ QUERIES ───
 
 export const queries = {
@@ -155,6 +179,9 @@ export const queries = {
 
   // Homepage (Singleton)
   homepage: `*[_type == "homepage" && _id == "homepage"][0]`,
+
+  // Demo Gallery (Singleton)
+  demoGallery: `*[_type == "demoGallery" && _id == "demoGallery"][0]`,
 
   // Master Data
   allAgens: `*[_type == "agen"] | order(namaUsaha asc)`,
@@ -216,5 +243,10 @@ export async function getAllPortalSlugs(): Promise<{ slug: string }[]> {
 // Call ini di index.astro untuk fetch konten Homepage dari CMS
 export async function getHomepage(): Promise<Homepage | null> {
   return await sanityClient.fetch(queries.homepage)
+}
+
+// Call ini di demo.astro untuk fetch konten Galeri Demo dari CMS
+export async function getDemoGallery(): Promise<DemoGallery | null> {
+  return await sanityClient.fetch(queries.demoGallery)
 }
 

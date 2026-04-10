@@ -1,4 +1,13 @@
 ---
+import { getDemoGallery } from '../../lib/sanity';
+import imageUrlBuilder from '@sanity/image-url';
+import { sanityClient } from 'sanity:client';
+
+const builder = imageUrlBuilder(sanityClient);
+function urlFor(source: any) {
+  return builder.image(source);
+}
+
 export interface DemoItem {
   title: string;
   description: string;
@@ -12,7 +21,8 @@ export interface DemoSector {
   items: DemoItem[];
 }
 
-const sectors: DemoSector[] = [
+// ─── Hardcoded fallback (digunakan jika CMS belum diisi) ───
+const fallbackSectors: DemoSector[] = [
   {
     sectorTitle: "Pariwisata & Cagar Budaya",
     sectorIcon: "",
@@ -20,13 +30,13 @@ const sectors: DemoSector[] = [
       {
         title: "Wisata Candi & Sejarah",
         description: "Mockup portal digital Candi Dieng dengan audio multibahasa dan galeri interaktif.",
-        image: "https://images.unsplash.com/photo-1588668214407-6ea9a6d8c272?q=80&w=800&auto=format&fit=crop",
+        image: "https://images.unsplash.com/photo-1588668214407-6ea9a6d8c272?q=80&w=400&auto=format&fit=crop",
         url: "/demo/wisata",
       },
       {
         title: "Wisata Religi & Ziarah Wali",
         description: "Digitalisasi makam tokoh agama untuk menampung peziarah dan jalur infaq digital.",
-        image: "https://images.unsplash.com/photo-1466442929976-97f336a657be?q=80&w=800&auto=format&fit=crop",
+        image: "https://images.unsplash.com/photo-1466442929976-97f336a657be?q=80&w=400&auto=format&fit=crop",
         url: "/demo/religi",
       },
     ],
@@ -38,19 +48,19 @@ const sectors: DemoSector[] = [
       {
         title: "Prasasti Peresmian Pemerintah",
         description: "Prasasti digital untuk gedung negara, tugu peringatan, dan monumen peresmian.",
-        image: "https://images.unsplash.com/photo-1577717903315-1691ae25ab3f?q=80&w=800&auto=format&fit=crop",
+        image: "https://images.unsplash.com/photo-1577717903315-1691ae25ab3f?q=80&w=400&auto=format&fit=crop",
         url: "/demo/pemerintahan",
       },
       {
         title: "Yayasan & Pondok Pesantren",
         description: "Profil pesantren, arsip kitab kuning, dan jalur donasi atau wakaf digital.",
-        image: "https://images.unsplash.com/photo-1590076215667-875c2d76b707?q=80&w=800&auto=format&fit=crop",
+        image: "https://images.unsplash.com/photo-1590076215667-875c2d76b707?q=80&w=400&auto=format&fit=crop",
         url: "/demo/institusi",
       },
       {
         title: "Aset Perusahaan & Gedung",
         description: "Tonggak sejarah (milestone) perusahaan untuk lobi gedung, pabrik, atau kantor pusat.",
-        image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=800&auto=format&fit=crop",
+        image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=400&auto=format&fit=crop",
         url: "/demo/korporasi",
       },
     ],
@@ -62,13 +72,13 @@ const sectors: DemoSector[] = [
       {
         title: "Monumen Kesenian & Ruang Publik",
         description: "Patung & instalasi seni yang terhubung langsung ke profil paguyuban kreator.",
-        image: "https://images.unsplash.com/photo-1561839561-b13bcfe95249?q=80&w=800&auto=format&fit=crop",
+        image: "https://images.unsplash.com/photo-1561839561-b13bcfe95249?q=80&w=400&auto=format&fit=crop",
         url: "/demo/monumen",
       },
       {
         title: "Kreator, Penemu & Penulis",
         description: "Plakat QR untuk penghargaan karya, peluncuran buku, atau tautan penjualan langsung.",
-        image: "https://images.unsplash.com/photo-1518998053901-5348d3961a04?q=80&w=800&auto=format&fit=crop",
+        image: "https://images.unsplash.com/photo-1518998053901-5348d3961a04?q=80&w=400&auto=format&fit=crop",
         url: "/demo/kreator",
       },
     ],
@@ -80,18 +90,46 @@ const sectors: DemoSector[] = [
       {
         title: "Silsilah Trah / Bani",
         description: "Portal memori keluarga besar, arsip foto leluhur, dan pesan suara lintas generasi.",
-        image: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?q=80&w=800&auto=format&fit=crop",
+        image: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?q=80&w=400&auto=format&fit=crop",
         url: "/demo/keluarga",
       },
       {
         title: "Makam Pusaka & Bongpay",
         description: "Digitalisasi nisan dan bongpay Tionghoa untuk merawat sanad keluarga lintas abad.",
-        image: "https://images.unsplash.com/photo-1554907984-15263bfd63bd?q=80&w=800&auto=format&fit=crop",
+        image: "https://images.unsplash.com/photo-1554907984-15263bfd63bd?q=80&w=400&auto=format&fit=crop",
         url: "/demo/pusaka",
       },
     ],
   },
 ];
+
+// ─── Fetch dari CMS, fallback ke hardcoded ───
+const cmsData = await getDemoGallery();
+
+// Header
+const pageTitle = cmsData?.pageTitle || 'Galeri';
+const pageTitleAccent = cmsData?.pageTitleAccent || 'Purwarupa';
+const pageDescription = cmsData?.pageDescription || 'Jelajahi contoh portal digital interaktif dari berbagai sektor. Pindai, sentuh, dan rasakan pengalaman phygital sesungguhnya.';
+
+// Sectors: transform CMS data ke format lokal, atau pakai fallback
+let sectors: DemoSector[];
+
+if (cmsData?.sectors && cmsData.sectors.length > 0) {
+  sectors = cmsData.sectors.map((s) => ({
+    sectorTitle: s.sectorTitle || '',
+    sectorIcon: s.sectorIcon || '',
+    items: (s.items || []).map((item) => ({
+      title: item.itemTitle || '',
+      description: item.itemDescription || '',
+      image: item.itemImage
+        ? urlFor(item.itemImage).width(400).height(533).quality(60).auto('format').url()
+        : item.itemImageUrl || '',
+      url: item.itemUrl || '#',
+    })),
+  }));
+} else {
+  sectors = fallbackSectors;
+}
 ---
 
 <section class="demo-gallery-section">
@@ -99,11 +137,10 @@ const sectors: DemoSector[] = [
     <!-- Page Header -->
     <div class="demo-gallery-header">
       <h1 class="demo-gallery-title">
-        Galeri <span class="text-brass">Purwarupa</span>
+        {pageTitle} <span class="text-brass">{pageTitleAccent}</span>
       </h1>
       <p class="demo-gallery-desc">
-        Jelajahi contoh portal digital interaktif dari berbagai sektor.
-        Pindai, sentuh, dan rasakan pengalaman phygital sesungguhnya.
+        {pageDescription}
       </p>
     </div>
 
@@ -129,6 +166,10 @@ const sectors: DemoSector[] = [
                 alt={demo.title}
                 class="demo-card-img"
                 loading="lazy"
+                decoding="async"
+                width="400"
+                height="533"
+                fetchpriority="low"
               />
 
               {/* Dark Overlay */}
