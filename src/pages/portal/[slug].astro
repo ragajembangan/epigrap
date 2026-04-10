@@ -42,6 +42,7 @@ const hasSocial = sosialMedia && (sosialMedia.facebook || sosialMedia.instagram 
 
 const themeClass = temaVisual || 'budaya';
 const heroImageUrl = gambarUtama ? urlFor(gambarUtama).width(1400).url() : null;
+const ogImageUrl = gambarUtama ? urlFor(gambarUtama).width(1200).height(630).fit('crop').url() : undefined;
 
 // Ekstrak YouTube Video ID
 function getYouTubeId(url: string): string | null {
@@ -68,7 +69,7 @@ const safeProdukLinks = etalaseProdukEksternal?.filter((produk: any) => isSafeUr
 ---
 
 
-<PortalLayout title={`${namaArtefak} — Epigrap`} description={deskripsiSingkat} theme={themeClass}>
+<PortalLayout title={`${namaArtefak} — Epigrap`} description={deskripsiSingkat} image={ogImageUrl} theme={themeClass}>
 
   <!-- 1. HERO SECTION -->
   <section class="hero">

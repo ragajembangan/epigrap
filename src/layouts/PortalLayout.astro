@@ -1,22 +1,21 @@
 ---
 import '../styles/global.css';
+import SEO from '../components/SEO.astro';
 
 export interface Props {
   title?: string;
   description?: string;
+  image?: string;
   theme?: string;
 }
 
-const { title, description, theme = 'budaya' } = Astro.props;
+const { title, description, image, theme = 'budaya' } = Astro.props;
 ---
 
 <!DOCTYPE html>
 <html lang="id">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{title || 'Portal Epigrap'}</title>
-    {description && <meta name="description" content={description} />}
+    <SEO title={title || 'Portal Epigrap'} description={description} image={image} />
     <meta name="robots" content="index, follow" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   </head>
