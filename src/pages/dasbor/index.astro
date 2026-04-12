@@ -17,7 +17,17 @@ if (!auth.userId) {
 }
 
 // Ambil clientId stabil dari Clerk publicMetadata
-const clientId = (auth.sessionClaims?.publicMetadata as { clientId?: string })?.clientId;
+// sessionClaims.metadata atau sessionClaims.publicMetadata
+const metadata = (auth.sessionClaims?.metadata as { clientId?: string })
+  || (auth.sessionClaims?.publicMetadata as { clientId?: string })
+  || {};
+const clientId = metadata?.clientId;
+
+// Debug: log auth structure (hapus setelah testing)
+console.log('[DASBOR DEBUG] userId:', auth.userId);
+console.log('[DASBOR DEBUG] sessionClaims keys:', auth.sessionClaims ? Object.keys(auth.sessionClaims) : 'null');
+console.log('[DASBOR DEBUG] sessionClaims:', JSON.stringify(auth.sessionClaims));
+console.log('[DASBOR DEBUG] clientId:', clientId);
 
 // Edge case: user sudah login tapi belum di-assign ke klien manapun
 const isUnassigned = !clientId;
