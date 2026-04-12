@@ -20,9 +20,9 @@ if (!sanityToken) {
 export default defineConfig({
   site: 'https://epigrap.com',
   output: 'static',
+  // @ts-ignore - prerenderEnvironment is valid but types lag behind
   adapter: cloudflare({
-    platformProxy: { enabled: true },
-    prerenderEnvironment: 'node'
+    prerenderEnvironment: 'node',
   }),
   vite: {
     optimizeDeps: { exclude: ['@clerk/astro'] },

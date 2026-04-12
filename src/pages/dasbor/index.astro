@@ -129,7 +129,7 @@ const artifacts = isUnassigned ? [] : await getArtifactsByClientId(clientId);
                     <span>Arsip Privat</span>
                   </div>
                   <div class="private-content">
-                    <PortableTextRenderer value={item.arsipPrivat} client:load />
+                    <PortableTextRenderer content={item.arsipPrivat} client:load />
                   </div>
                 </div>
               )}

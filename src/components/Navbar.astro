@@ -220,7 +220,7 @@
       if (signedOutEl) signedOutEl.style.display = "none";
       if (signedInEl) signedInEl.style.display = "block";
       if (userBtnContainer) {
-        clerk.mountUserButton(userBtnContainer, {
+        clerk.mountUserButton(userBtnContainer as HTMLDivElement, {
           afterSignOutUrl: "/",
         });
       }
