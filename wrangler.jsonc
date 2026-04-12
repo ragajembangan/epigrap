@@ -2,6 +2,7 @@
   "compatibility_date": "2026-04-12",
   "compatibility_flags": ["nodejs_compat"],
   "vars": {
-    "PUBLIC_CLERK_PUBLISHABLE_KEY": "pk_test_c2VjdXJlLXN3YW4tNjguY2xlcmsuYWNjb3VudHMuZGV2JA"
+    "PUBLIC_CLERK_PUBLISHABLE_KEY": "pk_test_c2VjdXJlLXN3YW4tNjguY2xlcmsuYWNjb3VudHMuZGV2JA",
+    "CLERK_SECRET_KEY": "sk_test_DIsOT9LZG9JIM2gPSGsYbEnNJ994j8FN2qttoMhdUM"
   }
 }
