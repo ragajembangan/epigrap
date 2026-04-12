@@ -26,6 +26,30 @@ export const artifact = defineType({
       to: [{ type: 'client' }],
       validation: (rule) => rule.required(),
     }),
+
+    // ─── Multi-tenant: Identitas & Akses ───
+    defineField({
+      name: 'clientId',
+      title: 'Client ID (Stabil / Kustom)',
+      type: 'string',
+      description: 'ID stabil kustom yang dikelola tim Epigrap (misal: "epigrap-keluarga-budi-2024"). Harus sama persis dengan publicMetadata.clientId di Clerk user. JANGAN gunakan Clerk User ID langsung.',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'statusAkses',
+      title: 'Status Akses Konten',
+      type: 'string',
+      description: 'Publik = terlihat semua orang di portal QR. Privat = hanya terlihat oleh klien yang login di dashboard.',
+      initialValue: 'publik',
+      options: {
+        list: [
+          { title: 'Publik (Terbuka untuk Semua Pengunjung)', value: 'publik' },
+          { title: 'Privat (Hanya Klien yang Login)', value: 'privat' },
+        ],
+        layout: 'radio',
+      },
+      validation: (rule) => rule.required(),
+    }),
     defineField({
       name: 'slugQR',
       title: 'Slug Spesifik QR Code',
@@ -126,13 +150,24 @@ export const artifact = defineType({
     }),
     defineField({
       name: 'artikelSejarah',
-      title: 'Artikel Utama (Sejarah / Profil)',
+      title: 'Artikel Sejarah (PUBLIK)',
       type: 'array',
       of: [
         { type: 'block' },
         { type: 'image' },
       ],
-      description: 'Tulisan panjang berisi sejarah, narasi mendalam. Bisa di-generate otomatis dengan tombol AI di atas. Maksimal 5 artikel/section.',
+      description: 'Tulisan panjang berisi sejarah, narasi mendalam yang TAMPIL DI PORTAL PUBLIK. Bisa di-generate otomatis dengan tombol AI di atas.',
+      validation: (rule) => rule.max(50),
+    }),
+    defineField({
+      name: 'arsipPrivat',
+      title: 'Arsip Privat (RAHASIA — Hanya Dashboard)',
+      type: 'array',
+      of: [
+        { type: 'block' },
+        { type: 'image' },
+      ],
+      description: '⚠️ Konten RAHASIA. Catatan keluarga, dokumen warisan, atau data sensitif yang HANYA tampil di dashboard klien yang sudah login dan clientId-nya cocok. TIDAK PERNAH ditampilkan di portal publik.',
       validation: (rule) => rule.max(50),
     }),
     defineField({

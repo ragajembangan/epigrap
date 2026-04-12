@@ -42,6 +42,8 @@ export interface Artifact {
   namaArtefak: string;
   slugQR: { current: string };
   klien: Client;
+  clientId: string;
+  statusAkses: 'publik' | 'privat';
   statusFisik: 'unpaid' | 'draft' | 'produksi' | 'deployed';
   temaVisual: 'budaya' | 'formal' | 'religius' | 'memorial' | 'klasik';
   gambarUtama?: any;
@@ -50,6 +52,7 @@ export interface Artifact {
   galeriFoto?: any[];
   youtubeUrl?: string;
   artikelSejarah?: PortableTextBlock[];
+  arsipPrivat?: PortableTextBlock[];
   linkDonasiSaweran?: { title: string; url: string }[];
   etalaseProdukEksternal?: {
     namaProduk: string;
@@ -210,8 +213,12 @@ export const queries = {
   }`,
   
   // Portal Dinamis (Dipakai di src/pages/portal/[slug].astro)
+  // KRITIS: Projection eksplisit — arsipPrivat SENGAJA TIDAK disertakan agar tidak bocor ke publik
   artifactBySlug: `*[_type == "artifact" && slugQR.current == $slug][0] {
-    ...,
+    _id, namaArtefak, slugQR, temaVisual, gambarUtama, slogan,
+    deskripsiSingkat, galeriFoto, youtubeUrl, artikelSejarah,
+    linkDonasiSaweran, etalaseProdukEksternal, sosialMedia, web3Data,
+    statusFisik, statusAkses, clientId,
     klien->{
       _id,
       namaKlien,
@@ -219,8 +226,16 @@ export const queries = {
     }
   }`,
 
-  // Dashboard Data (Dipakai di src/pages/dasbor/index.astro saat Klien login Clerk)
-  artifactByClientEmail: `*[_type == "artifact" && klien->email == $email][0]`,
+  // Dashboard Data — Isolasi per tenant (Dipakai di src/pages/dasbor/index.astro saat Klien login Clerk)
+  // Query ini mengembalikan SEMUA field termasuk arsipPrivat, karena dashboard sudah dilindungi Clerk auth
+  artifactsByClientId: `*[_type == "artifact" && clientId == $clientId] {
+    ...,
+    klien->{
+      _id,
+      namaKlien,
+      tier
+    }
+  } | order(_createdAt desc)`,
 }
 
 // ─── HELPER FUNCTIONS ───
@@ -248,5 +263,10 @@ export async function getHomepage(): Promise<Homepage | null> {
 // Call ini di demo.astro untuk fetch konten Galeri Demo dari CMS
 export async function getDemoGallery(): Promise<DemoGallery | null> {
   return await sanityClient.fetch(queries.demoGallery)
+}
+
+// Call ini di dasbor/index.astro untuk fetch artefak milik klien yang sedang login
+export async function getArtifactsByClientId(clientId: string): Promise<Artifact[]> {
+  return await sanityClient.fetch(queries.artifactsByClientId, { clientId })
 }
 
