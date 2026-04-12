@@ -23,6 +23,12 @@ export default defineConfig({
   adapter: cloudflare({
     platformProxy: { enabled: true },
   }),
+  vite: {
+    optimizeDeps: { exclude: ['@clerk/astro'] },
+    ssr: {
+      external: ['node:fs', 'node:path', 'node:async_hooks', 'fs', 'path', 'async_hooks', '@clerk/astro'],
+    },
+  },
   integrations: [
     clerk(),
     sitemap(),
