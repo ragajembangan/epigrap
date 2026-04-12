@@ -14,7 +14,10 @@ export const POST: APIRoute = async ({ request, locals }) => {
       });
     }
 
-    const role = (auth.sessionClaims?.publicMetadata as { role?: string })?.role;
+    const metadata = (auth.sessionClaims?.metadata as { role?: string })
+      || (auth.sessionClaims?.publicMetadata as { role?: string })
+      || {};
+    const role = metadata?.role;
     if (role !== 'admin') {
       return new Response(JSON.stringify({ error: 'Forbidden: Hanya tim internal Epigrap yang dapat diizinkan menggunakan fitur AI ini.' }), {
         status: 403,
