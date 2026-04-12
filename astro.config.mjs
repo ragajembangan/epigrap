@@ -22,6 +22,7 @@ export default defineConfig({
   output: 'static',
   adapter: cloudflare({
     platformProxy: { enabled: true },
+    prerenderEnvironment: 'node'
   }),
   vite: {
     optimizeDeps: { exclude: ['@clerk/astro'] },
