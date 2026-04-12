@@ -15,7 +15,8 @@ const clerkAuth = clerkMiddleware((auth, context) => {
 // yang terjadi di Cloudflare Workers runtime
 const safeClerkAuth = defineMiddleware(async (context, next) => {
   try {
-    return await clerkAuth(context, next);
+    // Cast hasil eksekusi clerkAuth ke Response untuk mematuhi MiddlewareHandler Astro
+    return (await clerkAuth(context, next)) as Response;
   } catch (err: any) {
     if (err?.message?.includes('immutable')) {
       // Clerk gagal set header di runtime Cloudflare, lanjutkan tanpa auth
