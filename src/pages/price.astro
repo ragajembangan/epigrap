@@ -1,0 +1,859 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout 
+  title="Harga & Paket Layanan — Epigrap" 
+  description="Pilihan paket berlangganan sistem portal phygital Epigrap untuk ranah personal, pariwisata, hingga enterprise."
+>
+  <div class="pricing-page-wrapper">
+    <!-- Header -->
+    <header class="pricing-header text-center">
+      <h1 class="brand-title">PILIHAN <span class="text-brass">HARGA</span></h1>
+      <p class="subtitle">Investasi untuk keabadian digital tanpa batas waktu maupun ruang.</p>
+    </header>
+
+    <!-- Info Note -->
+    <div class="disclaimer-banner container">
+      <div class="disclaimer-box">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        <p>Seluruh harga pada halaman ini merupakan biaya lisensi <strong>sistem digital Epigrap</strong> (portal, CMS, dan infrastruktur). Untuk pembuatan monumen fisik seperti prasasti, plakat, atau tugu, Anda dapat bekerja sama langsung dengan <a href="/partner" class="inline-link">jaringan mitra pengrajin</a> kami dengan tarif terpisah.</p>
+      </div>
+    </div>
+
+    <!-- Pricing Cards -->
+    <section class="pricing-cards-section container">
+      <div class="cards-grid">
+        
+        <!-- Tier 1: Privat -->
+        <article class="price-card card-dark">
+          <div class="card-header">
+            <h2 class="tier-name">Privat & Keluarga</h2>
+            <p class="tier-target">Untuk Silsilah, Memori Keluarga & Makam Pusaka</p>
+          </div>
+          
+          <div class="price-box">
+            <div class="price-setup">
+              <span class="currency">Rp</span>
+              <span class="amount">1.500.000</span>
+            </div>
+            <p class="price-label">Biaya Setup Awal (Termasuk Masa Aktif 1 Tahun Pertama)</p>
+          </div>
+
+          <div class="price-renewal">
+            <p><strong>Rp 300.000</strong> / tahun (mulai tahun ke-2)</p>
+          </div>
+          
+          <ul class="feature-list">
+            <li>Pembuatan 1 Portal Monograf</li>
+            <li>Generate QR Code Digital (Siap Cetak)</li>
+            <li>Penyimpanan Cloud Memori Keluarga</li>
+            <li>Galeri Silsilah & Audio Memorial</li>
+          </ul>
+
+          <a href="/dasbor" class="btn-cta btn-outline">Reservasi Sistem</a>
+        </article>
+
+        <!-- Tier 2: Publik -->
+        <article class="price-card card-dark">
+          
+          <div class="card-header">
+            <h2 class="tier-name">Pariwisata & Publik</h2>
+            <p class="tier-target">Untuk Candi, Wisata Religi & Monumen Kesenian</p>
+          </div>
+          
+          <div class="price-box">
+            <div class="price-setup">
+              <span class="currency">Rp</span>
+              <span class="amount">4.500.000</span>
+            </div>
+            <p class="price-label">Biaya Setup Awal (Termasuk Masa Aktif 1 Tahun Pertama)</p>
+          </div>
+
+          <div class="price-renewal">
+            <p><strong>Rp 1.200.000</strong> / tahun (mulai tahun ke-2)</p>
+          </div>
+          
+          <ul class="feature-list">
+            <li>Pembuatan Portal Wisata & Ruang Publik</li>
+            <li>Fitur Audio Naratif Multibahasa</li>
+            <li>Fitur Donasi & Penjualan Produk Digital</li>
+            <li>Analitik Scan Pengunjung & Peta Interaktif</li>
+            <li>Dukungan Update Konten</li>
+          </ul>
+
+          <a href="/dasbor" class="btn-cta btn-fill">Reservasi Sistem</a>
+        </article>
+
+        <!-- Tier 3: Enterprise -->
+        <article class="price-card card-dark">
+          <div class="card-header">
+            <h2 class="tier-name">Enterprise</h2>
+            <p class="tier-target">Untuk Gedung Pemerintah, Pabrik & Korporasi Besar</p>
+          </div>
+          
+          <div class="price-box custom-price">
+            <div class="price-setup">
+              <span class="amount-text">Kustom</span>
+            </div>
+            <p class="price-label">Disesuaikan berdasarkan kerumitan infrastruktur</p>
+          </div>
+
+          <div class="price-renewal">
+            <p><strong>Berbasis SLA</strong> (Kesepakatan Tahunan Fleksibel)</p>
+          </div>
+          
+          <ul class="feature-list">
+            <li>Portal Aset & Peresmian Berskala Besar</li>
+            <li>Pengembangan API Kustom & Integrasi Sistem</li>
+            <li>Lisensi Deployment On-Premise (Opsional)</li>
+            <li>Arsitektur Berstandar Global</li>
+            <li>Dukungan Teknis Prioritas</li>
+          </ul>
+
+          <a href="/dasbor" class="btn-cta btn-outline">Hubungi Konsultan</a>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- Blockchain Add-On Section -->
+    <section class="blockchain-section container">
+      <div class="blockchain-wrapper">
+        <!-- Decorative blockchain network visualization -->
+        <div class="chain-visual">
+          <svg viewBox="0 0 600 60" fill="none" xmlns="http://www.w3.org/2000/svg" class="chain-svg">
+            <!-- Connecting lines (right edge to left edge of next cube) -->
+            <line x1="50" y1="30" x2="150" y2="30" class="chain-line"/>
+            <line x1="190" y1="30" x2="280" y2="30" class="chain-line"/>
+            <line x1="320" y1="30" x2="420" y2="30" class="chain-line"/>
+            <line x1="460" y1="30" x2="550" y2="30" class="chain-line"/>
+
+            <!-- Cube 1 -->
+            <g class="chain-cube" style="--cube-delay: 0s">
+              <polygon points="30,25 30,55 10,45 10,15" class="cube-left"/>
+              <polygon points="30,25 50,15 50,45 30,55" class="cube-right"/>
+              <polygon points="10,15 30,5 50,15 30,25" class="cube-top"/>
+            </g>
+
+            <!-- Cube 2 -->
+            <g class="chain-cube" style="--cube-delay: 0.6s" transform="translate(140,0)">
+              <polygon points="30,25 30,55 10,45 10,15" class="cube-left"/>
+              <polygon points="30,25 50,15 50,45 30,55" class="cube-right"/>
+              <polygon points="10,15 30,5 50,15 30,25" class="cube-top"/>
+            </g>
+
+            <!-- Cube 3 (center) -->
+            <g class="chain-cube" style="--cube-delay: 1.2s" transform="translate(270,0)">
+              <polygon points="30,25 30,55 10,45 10,15" class="cube-left"/>
+              <polygon points="30,25 50,15 50,45 30,55" class="cube-right"/>
+              <polygon points="10,15 30,5 50,15 30,25" class="cube-top"/>
+            </g>
+
+            <!-- Cube 4 -->
+            <g class="chain-cube" style="--cube-delay: 1.8s" transform="translate(410,0)">
+              <polygon points="30,25 30,55 10,45 10,15" class="cube-left"/>
+              <polygon points="30,25 50,15 50,45 30,55" class="cube-right"/>
+              <polygon points="10,15 30,5 50,15 30,25" class="cube-top"/>
+            </g>
+
+            <!-- Cube 5 -->
+            <g class="chain-cube" style="--cube-delay: 2.4s" transform="translate(540,0)">
+              <polygon points="30,25 30,55 10,45 10,15" class="cube-left"/>
+              <polygon points="30,25 50,15 50,45 30,55" class="cube-right"/>
+              <polygon points="10,15 30,5 50,15 30,25" class="cube-top"/>
+            </g>
+          </svg>
+        </div>
+
+        <div class="blockchain-content">
+          <h2 class="blockchain-title">
+            <span class="text-brass">Keabadian On-Chain</span> — Fitur Tambahan
+          </h2>
+          <p class="blockchain-headline">
+            Server bisa mati. Perusahaan bisa bangkrut. <strong>Tapi blockchain tidak pernah padam.</strong>
+          </p>
+          <p class="blockchain-desc">
+            Epigrap adalah satu-satunya platform portal phygital yang menawarkan opsi <strong>pencatatan permanen</strong> ke jaringan blockchain terdesentralisasi. Setiap konten — foto, teks, audio, video — yang sudah Anda unggah ke portal dapat diabadikan secara on-chain, sehingga <strong>tidak bisa dihapus, diubah, atau dimanipulasi oleh siapapun, selamanya.</strong>
+          </p>
+        </div>
+
+        <div class="blockchain-tech-grid">
+          <!-- Arweave -->
+          <div class="tech-card">
+            <div class="tech-card-header">
+              <span class="tech-badge">STORAGE LAYER</span>
+              <h3 class="tech-name">Arweave</h3>
+            </div>
+            <p class="tech-desc">Penyimpanan data permanen. Bayar sekali, tersimpan selamanya di jaringan terdesentralisasi yang tersebar di seluruh dunia. File asli Anda — bukan hanya tautannya — benar-benar hidup di blockchain.</p>
+          </div>
+
+          <!-- Polygon -->
+          <div class="tech-card">
+            <div class="tech-card-header">
+              <span class="tech-badge">PROOF LAYER</span>
+              <h3 class="tech-name">Polygon</h3>
+            </div>
+            <p class="tech-desc">Sertifikat bukti keabadian. Setiap konten yang di-mint akan dicatat sebagai bukti kepemilikan digital (on-chain proof) yang dapat diverifikasi oleh siapapun melalui blockchain explorer publik.</p>
+          </div>
+        </div>
+
+        <!-- How it works -->
+        <div class="blockchain-how">
+          <h3 class="how-title">Bagaimana Cara Kerjanya?</h3>
+          <div class="how-steps">
+            <div class="step">
+              <div class="step-number">1</div>
+              <div class="step-text">
+                <strong>Top-Up Kredit</strong>
+                <span>Isi saldo kredit minting melalui dashboard Anda.</span>
+              </div>
+            </div>
+            <div class="step-divider"></div>
+            <div class="step">
+              <div class="step-number">2</div>
+              <div class="step-text">
+                <strong>Pilih Konten</strong>
+                <span>Tentukan file mana yang ingin diabadikan secara on-chain.</span>
+              </div>
+            </div>
+            <div class="step-divider"></div>
+            <div class="step">
+              <div class="step-number">3</div>
+              <div class="step-text">
+                <strong>Minting Otomatis</strong>
+                <span>Epigrap mengeksekusi pencatatan ke Arweave & Polygon. Anda terima bukti transaksi.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="blockchain-note">
+          <p>✦ Fitur ini bersifat <strong>add-on</strong> dan tidak termasuk dalam paket langganan di atas. Biaya minting ditentukan berdasarkan ukuran file dan kondisi jaringan saat transaksi. Tersedia untuk semua tier paket.</p>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</BaseLayout>
+
+<style>
+  .pricing-page-wrapper {
+    padding-top: 10rem;
+    padding-bottom: 8rem;
+    min-height: 100vh;
+    background: radial-gradient(circle at top center, rgba(197, 160, 89, 0.05) 0%, var(--color-obsidian) 70%);
+  }
+
+  .text-center {
+    text-align: center;
+  }
+
+  .pricing-header {
+    margin-bottom: 3rem;
+    animation: fadeDown 1s ease-out forwards;
+  }
+
+  .brand-title {
+    font-family: var(--font-heading);
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--color-parchment);
+    text-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    margin-bottom: 0.5rem;
+  }
+
+  .text-brass {
+    color: var(--color-brass);
+  }
+
+  .subtitle {
+    font-size: 1.1rem;
+    color: rgba(244, 238, 223, 0.7);
+    letter-spacing: 1px;
+    font-weight: 300;
+  }
+
+  /* Disclaimer Banner */
+  .disclaimer-banner {
+    margin-bottom: 4rem;
+    animation: fadeUp 1s ease-out 0.2s forwards;
+    opacity: 0;
+  }
+
+  .disclaimer-box {
+    background: rgba(197, 160, 89, 0.06);
+    border: 1px solid rgba(197, 160, 89, 0.2);
+    border-left: 3px solid rgba(197, 160, 89, 0.5);
+    padding: 1.25rem 1.75rem;
+    border-radius: 6px;
+    display: flex;
+    gap: 1.25rem;
+    align-items: flex-start;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .disclaimer-box svg {
+    width: 24px;
+    height: 24px;
+    color: var(--color-brass);
+    flex-shrink: 0;
+    margin-top: 2px;
+    opacity: 0.7;
+  }
+
+  .disclaimer-box p {
+    color: rgba(244, 238, 223, 0.7);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin: 0;
+  }
+  .disclaimer-box strong {
+    color: rgba(244, 238, 223, 0.9);
+    font-weight: 600;
+  }
+
+  .inline-link {
+    color: var(--color-brass);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: opacity 0.2s;
+  }
+  .inline-link:hover {
+    opacity: 0.8;
+  }
+
+  /* Cards Grid */
+  .pricing-cards-section {
+    padding: 2rem 0;
+  }
+
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2.5rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    align-items: stretch;
+  }
+
+  /* Individual Card */
+  .price-card {
+    border-radius: 12px;
+    padding: 3rem 2rem;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    backdrop-filter: blur(10px);
+    transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s;
+    opacity: 0;
+    animation: fadeUp 1s ease-out 0.4s forwards;
+  }
+
+  .price-card:nth-child(2) { animation-delay: 0.6s; }
+  .price-card:nth-child(3) { animation-delay: 0.8s; }
+
+  .price-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+  }
+
+  .card-dark {
+    background: rgba(17, 17, 17, 0.8);
+    border: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .card-highlight {
+    background: rgba(30, 27, 20, 0.8);
+    border: 1px solid rgba(197,160,89,0.3);
+    box-shadow: 0 10px 30px rgba(197, 160, 89, 0.1);
+  }
+  .card-highlight:hover {
+    border-color: rgba(197,160,89,0.5);
+    box-shadow: 0 20px 40px rgba(197, 160, 89, 0.15);
+  }
+
+  .popular-badge {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--color-brass);
+    color: var(--color-obsidian);
+    padding: 0.3rem 1rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .card-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+
+  .tier-name {
+    font-family: var(--font-heading);
+    font-size: 1.8rem;
+    color: var(--color-parchment);
+    margin-bottom: 0.5rem;
+  }
+
+  .tier-target {
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.4;
+  }
+
+  /* Price Area */
+  .price-box {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    background: rgba(0,0,0,0.2);
+    padding: 1.5rem;
+    border-radius: 8px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .price-setup {
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .currency {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: rgba(244, 238, 223, 0.8);
+  }
+
+  .amount {
+    font-size: 2.5rem;
+    font-weight: 700;
+    letter-spacing: -1px;
+    color: var(--color-parchment);
+  }
+  
+  .amount-text {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--color-parchment);
+    font-family: var(--font-heading);
+  }
+
+  .price-label {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .price-renewal {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px dashed rgba(255,255,255,0.1);
+  }
+
+  .price-renewal p {
+    font-size: 0.85rem;
+    color: rgba(244, 238, 223, 0.7);
+  }
+
+  .price-renewal strong {
+    color: var(--color-parchment);
+  }
+
+  /* Features */
+  .feature-list {
+    list-style: none;
+    margin-bottom: 3rem;
+    flex-grow: 1; /* Pushes button to bottom */
+  }
+
+  .feature-list li {
+    font-size: 0.9rem;
+    color: rgba(244, 238, 223, 0.85);
+    margin-bottom: 1rem;
+    padding-left: 1.8rem;
+    position: relative;
+    line-height: 1.5;
+  }
+
+  .feature-list li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    top: 0px;
+    color: var(--color-brass);
+    font-weight: bold;
+    font-size: 1rem;
+  }
+
+  /* Buttons */
+  .btn-cta {
+    display: inline-block;
+    text-align: center;
+    padding: 1rem 1.5rem;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    width: 100%;
+  }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--color-parchment);
+    border: 1px solid rgba(244, 238, 223, 0.3);
+  }
+  .btn-outline:hover {
+    background: rgba(244, 238, 223, 0.1);
+    border-color: rgba(244, 238, 223, 0.5);
+  }
+
+  .btn-fill {
+    background: var(--color-brass);
+    color: var(--color-obsidian);
+    border: 1px solid var(--color-brass);
+  }
+  .btn-fill:hover {
+    background: var(--color-parchment);
+    border-color: var(--color-parchment);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(197, 160, 89, 0.3);
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 900px) {
+    .cards-grid {
+      grid-template-columns: minmax(300px, 450px);
+      justify-content: center;
+    }
+    
+    .disclaimer-box {
+      flex-direction: column;
+      gap: 1rem;
+      align-items: center;
+      text-align: center;
+    }
+  }
+
+  /* =============================================
+     BLOCKCHAIN ADD-ON SECTION
+     ============================================= */
+  .blockchain-section {
+    margin-top: 6rem;
+    opacity: 0;
+    animation: fadeUp 1s ease-out 1s forwards;
+  }
+
+  .blockchain-wrapper {
+    max-width: 900px;
+    margin: 0 auto;
+    background: linear-gradient(145deg, rgba(30, 27, 20, 0.6), rgba(17, 17, 17, 0.8));
+    border: 1px solid rgba(197, 160, 89, 0.15);
+    border-radius: 16px;
+    padding: 4rem 3rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Subtle glow effect behind the wrapper */
+  .blockchain-wrapper::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at 30% 20%, rgba(197, 160, 89, 0.06) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  .chain-visual {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto 2.5rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .chain-svg {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
+  .chain-line {
+    stroke: rgba(197, 160, 89, 0.25);
+    stroke-width: 2;
+    stroke-dasharray: 6 4;
+    animation: chainFlowLine 2s linear infinite;
+  }
+
+  /* 3D Cube faces */
+  .cube-top {
+    fill: rgba(197, 160, 89, 0.35);
+    stroke: rgba(197, 160, 89, 0.5);
+    stroke-width: 0.5;
+  }
+
+  .cube-right {
+    fill: rgba(197, 160, 89, 0.15);
+    stroke: rgba(197, 160, 89, 0.4);
+    stroke-width: 0.5;
+  }
+
+  .cube-left {
+    fill: rgba(197, 160, 89, 0.08);
+    stroke: rgba(197, 160, 89, 0.35);
+    stroke-width: 0.5;
+  }
+
+  .chain-cube {
+    animation: cubePulse 3s ease-in-out infinite;
+    animation-delay: var(--cube-delay);
+  }
+
+  @keyframes chainFlowLine {
+    0% { stroke-dashoffset: 0; }
+    100% { stroke-dashoffset: -20; }
+  }
+
+  @keyframes cubePulse {
+    0%, 100% {
+      opacity: 0.5;
+      filter: drop-shadow(0 0 0px transparent);
+    }
+    50% {
+      opacity: 1;
+      filter: drop-shadow(0 0 6px rgba(197, 160, 89, 0.4));
+    }
+  }
+
+  .chain-svg {
+    width: 100%;
+    height: auto;
+  }
+
+  .blockchain-content {
+    position: relative;
+    z-index: 1;
+    margin-bottom: 3rem;
+    text-align: center;
+  }
+
+  .blockchain-title {
+    font-family: var(--font-heading);
+    font-size: clamp(1.5rem, 3vw, 2.2rem);
+    color: var(--color-parchment);
+    margin-bottom: 1.5rem;
+  }
+
+  .blockchain-headline {
+    font-size: 1.15rem;
+    color: rgba(244, 238, 223, 0.9);
+    margin-bottom: 1rem;
+    line-height: 1.6;
+  }
+
+  .blockchain-headline strong {
+    color: var(--color-brass);
+  }
+
+  .blockchain-desc {
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.65);
+    line-height: 1.7;
+  }
+
+  .blockchain-desc strong {
+    color: rgba(244, 238, 223, 0.9);
+  }
+
+  /* Tech Cards (Arweave & Polygon) */
+  .blockchain-tech-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .tech-card {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 10px;
+    padding: 1.8rem;
+    transition: border-color 0.3s ease;
+  }
+
+  .tech-card:hover {
+    border-color: rgba(197, 160, 89, 0.25);
+  }
+
+  .tech-card-header {
+    margin-bottom: 1rem;
+  }
+
+  .tech-badge {
+    display: inline-block;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: var(--color-brass);
+    background: rgba(197, 160, 89, 0.1);
+    padding: 0.25rem 0.6rem;
+    border-radius: 3px;
+    margin-bottom: 0.6rem;
+  }
+
+  .tech-name {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    color: var(--color-parchment);
+  }
+
+  .tech-desc {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.65;
+  }
+
+  /* How it works */
+  .blockchain-how {
+    margin-bottom: 2.5rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .how-title {
+    font-family: var(--font-heading);
+    font-size: 1.2rem;
+    color: var(--color-parchment);
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+
+  .how-steps {
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    gap: 0;
+  }
+
+  .step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    flex: 1;
+    max-width: 200px;
+  }
+
+  .step-number {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(197, 160, 89, 0.15);
+    border: 1px solid rgba(197, 160, 89, 0.4);
+    color: var(--color-brass);
+    font-weight: 700;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.8rem;
+    flex-shrink: 0;
+  }
+
+  .step-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .step-text strong {
+    font-size: 0.85rem;
+    color: var(--color-parchment);
+  }
+
+  .step-text span {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.5);
+    line-height: 1.4;
+  }
+
+  .step-divider {
+    width: 60px;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(197, 160, 89, 0.3), transparent);
+    align-self: flex-start;
+    margin-top: 20px;
+    flex-shrink: 0;
+  }
+
+  /* Note */
+  .blockchain-note {
+    background: rgba(197, 160, 89, 0.05);
+    border: 1px solid rgba(197, 160, 89, 0.12);
+    border-radius: 6px;
+    padding: 1rem 1.5rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .blockchain-note p {
+    font-size: 0.8rem;
+    color: rgba(244, 238, 223, 0.6);
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  .blockchain-note strong {
+    color: var(--color-brass);
+  }
+
+  @media (max-width: 900px) {
+    .blockchain-wrapper {
+      padding: 2.5rem 1.5rem;
+    }
+
+    .blockchain-tech-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .how-steps {
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .step-divider {
+      width: 1px;
+      height: 30px;
+      background: linear-gradient(to bottom, transparent, rgba(197, 160, 89, 0.3), transparent);
+      margin-top: 0;
+    }
+  }
+</style>
