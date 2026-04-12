@@ -4,6 +4,7 @@ import sitemap from '@astrojs/sitemap';
 import sanity from '@sanity/astro';
 import react from '@astrojs/react';
 import cloudflare from '@astrojs/cloudflare';
+import clerk from '@clerk/astro';
 import { loadEnv } from 'vite';
 
 const env = loadEnv(process.env.NODE_ENV || 'development', process.cwd(), '');
@@ -19,8 +20,11 @@ if (!sanityToken) {
 export default defineConfig({
   site: 'https://epigrap.com',
   output: 'static',
-  adapter: cloudflare(),
+  adapter: cloudflare({
+    platformProxy: { enabled: true },
+  }),
   integrations: [
+    clerk(),
     sitemap(),
     sanity({
       projectId: '5g1ky8nn',

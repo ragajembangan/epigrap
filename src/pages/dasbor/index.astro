@@ -1,74 +1,375 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getArtifactsByClientId } from '../../lib/sanity';
+import { urlFor } from '../../lib/urlFor';
+import PortableTextRenderer from '../../components/PortableTextRenderer';
+
+// SSR: halaman ini dirender on-demand oleh Cloudflare Functions
+export const prerender = false;
+
+// Ambil data autentikasi dari Clerk (disediakan oleh middleware)
+const auth = Astro.locals.auth();
+
+// Validasi: apakah user sudah login?
+// (Seharusnya sudah dijamin oleh middleware, tapi sebagai safety net)
+if (!auth.userId) {
+  return Astro.redirect('/');
+}
+
+// Ambil clientId stabil dari Clerk publicMetadata
+const clientId = (auth.sessionClaims?.publicMetadata as { clientId?: string })?.clientId;
+
+// Edge case: user sudah login tapi belum di-assign ke klien manapun
+const isUnassigned = !clientId;
+
+// Fetch artefak milik klien ini dari Sanity
+const artifacts = isUnassigned ? [] : await getArtifactsByClientId(clientId);
 ---
 
-<BaseLayout title="Portal Klien Terbatas | Epigrap">
-  <div class="dashboard-placeholder">
-    <div class="container message-box">
-      <div class="lock-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-          <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-        </svg>
-      </div>
-      <h1>Portal Eksklusif</h1>
-      <p>Portal ini hanya tersedia untuk klien terpilih yang telah melakukan reservasi. Sistem autentikasi sedang dalam tahap finalisasi.</p>
-      <p>Undangan akses akan dikirimkan secara personal kepada setiap klien yang telah terkonfirmasi.</p>
-      <a href="/" class="btn-outline-gold mt-4">Kembali ke Beranda</a>
+<BaseLayout title="Dashboard Klien | Epigrap">
+  <div class="dashboard-wrapper">
+    <div class="container">
+      <header class="dash-header">
+        <div class="dash-header__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="3" y="3" width="7" height="7" rx="1"/>
+            <rect x="14" y="3" width="7" height="7" rx="1"/>
+            <rect x="3" y="14" width="7" height="7" rx="1"/>
+            <rect x="14" y="14" width="7" height="7" rx="1"/>
+          </svg>
+        </div>
+        <h1>Dashboard Klien</h1>
+        <p class="dash-header__subtitle">Kelola artefak phygital dan arsip pribadi Anda</p>
+      </header>
+
+      {isUnassigned ? (
+        <!-- State: Akun belum terhubung -->
+        <div class="state-card state-card--warning">
+          <div class="state-card__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="12" y1="8" x2="12" y2="12"/>
+              <line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+          </div>
+          <h2>Akun Belum Terhubung</h2>
+          <p>Akun Anda belum terhubung ke klien Epigrap manapun. Hubungi tim Epigrap untuk proses aktivasi.</p>
+          <a href="/" class="btn-outline-gold">Kembali ke Beranda</a>
+        </div>
+      ) : artifacts.length === 0 ? (
+        <!-- State: Klien terdaftar tapi belum punya artefak -->
+        <div class="state-card state-card--empty">
+          <div class="state-card__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="12" y1="18" x2="12" y2="12"/>
+              <line x1="9" y1="15" x2="15" y2="15"/>
+            </svg>
+          </div>
+          <h2>Belum Ada Artefak</h2>
+          <p>Belum ada artefak phygital yang terdaftar. Tim Epigrap akan segera menambahkan data Anda setelah proses reservasi selesai.</p>
+          <a href="/reservasi" class="btn-outline-gold">Lihat Info Reservasi</a>
+        </div>
+      ) : (
+        <!-- State: Tampilkan daftar artefak klien -->
+        <div class="artifacts-grid">
+          {artifacts.map((item) => (
+            <article class="artifact-card">
+              <div class="artifact-card__image">
+                {item.gambarUtama ? (
+                  <img
+                    src={urlFor(item.gambarUtama).width(600).height(400).fit('crop').url()}
+                    alt={item.namaArtefak}
+                    loading="lazy"
+                  />
+                ) : (
+                  <div class="artifact-card__placeholder">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                      <path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6"/>
+                    </svg>
+                  </div>
+                )}
+                <span class={`artifact-badge artifact-badge--${item.statusAkses || 'publik'}`}>
+                  {item.statusAkses === 'privat' ? 'Privat' : 'Publik'}
+                </span>
+              </div>
+
+              <div class="artifact-card__body">
+                <h3 class="artifact-card__title">{item.namaArtefak}</h3>
+
+                {item.deskripsiSingkat && (
+                  <p class="artifact-card__desc">{item.deskripsiSingkat}</p>
+                )}
+
+                <div class="artifact-card__meta">
+                  <span class={`status-dot status-dot--${item.statusFisik}`}></span>
+                  <span class="artifact-card__status">
+                    {item.statusFisik === 'deployed' ? 'Deployed' :
+                     item.statusFisik === 'produksi' ? 'Produksi' :
+                     item.statusFisik === 'draft' ? 'Draft' : 'Menunggu'}
+                  </span>
+                </div>
+
+                <div class="artifact-card__actions">
+                  <a href={`/portal/${item.slugQR.current}`} class="btn-outline-gold btn-sm" target="_blank" rel="noopener">
+                    Lihat Portal
+                  </a>
+                </div>
+              </div>
+
+              {/* Arsip Privat — hanya tampil di dashboard */}
+              {item.arsipPrivat && item.arsipPrivat.length > 0 && (
+                <div class="artifact-card__private">
+                  <div class="private-header">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16">
+                      <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                      <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                    </svg>
+                    <span>Arsip Privat</span>
+                  </div>
+                  <div class="private-content">
+                    <PortableTextRenderer value={item.arsipPrivat} client:load />
+                  </div>
+                </div>
+              )}
+            </article>
+          ))}
+        </div>
+      )}
     </div>
   </div>
 </BaseLayout>
 
 <style>
-  .dashboard-placeholder {
+  .dashboard-wrapper {
     min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     background-image: radial-gradient(circle at 50% 50%, rgba(20, 20, 20, 1) 0%, rgba(5, 5, 5, 1) 100%);
-    padding: 6rem 1rem;
+    padding: 8rem 1rem 4rem;
   }
 
-  .message-box {
+  /* Header */
+  .dash-header {
     text-align: center;
-    max-width: 600px;
-    background: #0A0A0A;
-    padding: 4rem 3rem;
-    border-radius: 8px;
-    border: 1px solid rgba(197, 160, 89, 0.3);
-    box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+    margin-bottom: 3rem;
   }
 
-  .lock-icon {
-    width: 64px;
-    height: 64px;
-    margin: 0 auto 2rem;
-    color: var(--color-velvet);
+  .dash-header__icon {
+    width: 48px;
+    height: 48px;
+    margin: 0 auto 1rem;
+    color: var(--color-brass);
   }
-  
-  .lock-icon svg {
+
+  .dash-header__icon svg {
     width: 100%;
     height: 100%;
   }
 
-  h1 {
+  .dash-header h1 {
     font-size: 2rem;
     color: var(--color-brass);
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.5rem;
   }
 
-  p {
+  .dash-header__subtitle {
+    color: #888;
+    font-size: 1rem;
+  }
+
+  /* State cards (unassigned / empty) */
+  .state-card {
+    text-align: center;
+    max-width: 560px;
+    margin: 0 auto;
+    background: #0A0A0A;
+    padding: 3rem 2.5rem;
+    border-radius: 8px;
+    border: 1px solid rgba(197, 160, 89, 0.2);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+  }
+
+  .state-card--warning {
+    border-color: rgba(214, 158, 46, 0.4);
+  }
+
+  .state-card__icon {
+    width: 56px;
+    height: 56px;
+    margin: 0 auto 1.5rem;
+    color: var(--color-brass);
+  }
+
+  .state-card__icon svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .state-card h2 {
+    font-size: 1.5rem;
+    color: var(--color-parchment);
+    margin-bottom: 1rem;
+  }
+
+  .state-card p {
     color: #999;
-    line-height: 1.6;
-    margin-bottom: 1.5rem;
+    line-height: 1.7;
+    margin-bottom: 2rem;
   }
 
-  .mt-4 {
-    margin-top: 2rem;
-    display: inline-block;
+  /* Artifact grid */
+  .artifacts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 2rem;
   }
 
+  .artifact-card {
+    background: #0A0A0A;
+    border: 1px solid rgba(197, 160, 89, 0.15);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+
+  .artifact-card:hover {
+    border-color: rgba(197, 160, 89, 0.4);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  }
+
+  .artifact-card__image {
+    position: relative;
+    height: 220px;
+    overflow: hidden;
+    background: #111;
+  }
+
+  .artifact-card__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .artifact-card__placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: #333;
+  }
+
+  .artifact-card__placeholder svg {
+    width: 64px;
+    height: 64px;
+  }
+
+  .artifact-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    padding: 0.25rem 0.7rem;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .artifact-badge--publik {
+    background: rgba(46, 139, 87, 0.85);
+    color: #e0ffe0;
+  }
+
+  .artifact-badge--privat {
+    background: rgba(139, 69, 19, 0.85);
+    color: #ffe8cc;
+  }
+
+  .artifact-card__body {
+    padding: 1.5rem;
+  }
+
+  .artifact-card__title {
+    font-size: 1.15rem;
+    color: var(--color-parchment);
+    margin-bottom: 0.5rem;
+  }
+
+  .artifact-card__desc {
+    font-size: 0.85rem;
+    color: #888;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .artifact-card__meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .status-dot--deployed { background: #2e8b57; }
+  .status-dot--produksi { background: #d69e2e; }
+  .status-dot--draft { background: #888; }
+  .status-dot--unpaid { background: #b33; }
+
+  .artifact-card__status {
+    font-size: 0.8rem;
+    color: #aaa;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .artifact-card__actions {
+    display: flex;
+    gap: 0.75rem;
+  }
+
+  .btn-sm {
+    padding: 0.45rem 1rem;
+    font-size: 0.75rem;
+  }
+
+  /* Private section */
+  .artifact-card__private {
+    border-top: 1px solid rgba(197, 160, 89, 0.15);
+    padding: 1.25rem 1.5rem;
+    background: rgba(139, 69, 19, 0.05);
+  }
+
+  .private-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--color-brass);
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 1rem;
+  }
+
+  .private-content {
+    font-size: 0.85rem;
+    color: #ccc;
+    line-height: 1.7;
+  }
+
+  /* Shared button */
   .btn-outline-gold {
+    display: inline-block;
     background-color: transparent;
     color: var(--color-brass);
     border: 1px solid var(--color-brass);
@@ -84,5 +385,19 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   .btn-outline-gold:hover {
     background-color: rgba(197, 160, 89, 0.1);
     transform: translateY(-2px);
+  }
+
+  @media (max-width: 768px) {
+    .dashboard-wrapper {
+      padding-top: 6rem;
+    }
+
+    .artifacts-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .dash-header h1 {
+      font-size: 1.5rem;
+    }
   }
 </style>

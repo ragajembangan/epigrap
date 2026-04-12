@@ -2,8 +2,27 @@ import type { APIRoute } from 'astro';
 
 export const prerender = false;
 
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request, locals }) => {
   try {
+    // --- GATE 1 & 2: Autentikasi & Otorisasi (Hanya Admin Epigrap) ---
+    const auth = locals.auth();
+    
+    if (!auth.userId) {
+      return new Response(JSON.stringify({ error: 'Unauthorized: Harap login terlebih dahulu.' }), {
+        status: 401,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+
+    const role = (auth.sessionClaims?.publicMetadata as { role?: string })?.role;
+    if (role !== 'admin') {
+      return new Response(JSON.stringify({ error: 'Forbidden: Hanya tim internal Epigrap yang dapat diizinkan menggunakan fitur AI ini.' }), {
+        status: 403,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+    // -------------------------------------------------------------
+
     const body = await request.json();
     const { namaArtefak, slogan, deskripsi, tema } = body;
 

@@ -11,7 +11,21 @@
       <a href="/#solusi" class="nav-link">Solusi</a>
       <a href="/demo" class="nav-link">Demo</a>
       <a href="/reservasi" class="nav-link">Reservasi</a>
-      <a href="/dasbor" class="btn-primary">Login</a>
+
+      <!-- Clerk: Tampilkan tombol sesuai status login -->
+      <div id="clerk-auth-slot" class="clerk-auth-slot">
+        <!-- SignedOut: Tampilkan tombol Login -->
+        <div id="clerk-signed-out">
+          <a href="/dasbor" class="btn-primary">Login</a>
+        </div>
+        <!-- SignedIn: Tampilkan avatar + link Dashboard -->
+        <div id="clerk-signed-in" style="display: none;">
+          <div class="clerk-user-area">
+            <a href="/dasbor" class="nav-link nav-link--dashboard">Dashboard</a>
+            <div id="clerk-user-button-container"></div>
+          </div>
+        </div>
+      </div>
     </nav>
 
     <button
@@ -78,6 +92,10 @@
     color: var(--color-brass);
   }
 
+  .nav-link--dashboard {
+    color: var(--color-brass);
+  }
+
   .btn-primary {
     background-color: var(--color-velvet);
     color: var(--color-parchment);
@@ -95,6 +113,17 @@
   .btn-primary:hover {
     background-color: #9a1421;
     transform: translateY(-2px);
+  }
+
+  .clerk-auth-slot {
+    display: flex;
+    align-items: center;
+  }
+
+  .clerk-user-area {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
   }
 
   .hamburger {
@@ -172,4 +201,40 @@
     const isExpanded = hamburger.getAttribute("aria-expanded") === "true";
     hamburger.setAttribute("aria-expanded", String(!isExpanded));
   });
+
+  // Clerk client-side auth detection
+  // Menggunakan Clerk's client-side JS untuk toggle UI tanpa SSR dependency
+  async function initClerkUI() {
+    // @ts-ignore - Clerk is loaded globally by the integration
+    const clerk = window.Clerk;
+    if (!clerk) return;
+
+    await clerk.load();
+
+    const signedOutEl = document.getElementById("clerk-signed-out");
+    const signedInEl = document.getElementById("clerk-signed-in");
+    const userBtnContainer = document.getElementById("clerk-user-button-container");
+
+    if (clerk.user) {
+      // User sudah login
+      if (signedOutEl) signedOutEl.style.display = "none";
+      if (signedInEl) signedInEl.style.display = "block";
+      if (userBtnContainer) {
+        clerk.mountUserButton(userBtnContainer, {
+          afterSignOutUrl: "/",
+        });
+      }
+    } else {
+      // User belum login
+      if (signedOutEl) signedOutEl.style.display = "block";
+      if (signedInEl) signedInEl.style.display = "none";
+    }
+  }
+
+  // Tunggu Clerk script dimuat
+  if (document.readyState === "complete") {
+    initClerkUI();
+  } else {
+    window.addEventListener("load", initClerkUI);
+  }
 </script>

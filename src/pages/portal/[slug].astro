@@ -35,8 +35,12 @@ const {
   linkDonasiSaweran,
   etalaseProdukEksternal,
   sosialMedia,
-  web3Data
+  web3Data,
+  statusAkses
 } = artifact;
+
+// Keamanan: Jika artefak bersifat privat, jangan render konten detail di portal publik
+const isPrivate = statusAkses === 'privat';
 
 const hasSocial = sosialMedia && (sosialMedia.facebook || sosialMedia.instagram || sosialMedia.tiktok || sosialMedia.youtube || sosialMedia.twitter);
 
@@ -71,6 +75,27 @@ const safeProdukLinks = etalaseProdukEksternal?.filter((produk: any) => isSafeUr
 
 <PortalLayout title={`${namaArtefak} — Epigrap`} description={deskripsiSingkat} image={ogImageUrl} theme={themeClass}>
 
+  {isPrivate ? (
+    <!-- Artefak privat: hanya tampilkan pesan akses terbatas -->
+    <section class="private-notice">
+      <div class="private-notice__box">
+        <div class="private-notice__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+          </svg>
+        </div>
+        <h1>{namaArtefak}</h1>
+        <p>Konten artefak ini bersifat privat dan hanya dapat diakses oleh pemilik yang sudah login melalui Dashboard Klien.</p>
+        <div class="private-notice__actions">
+          <a href="/dasbor" class="btn-notice-primary">Masuk ke Dashboard</a>
+          <a href="/" class="btn-notice-secondary">Kembali ke Beranda</a>
+        </div>
+      </div>
+    </section>
+  ) : (
+
+  <!-- Konten publik: render semua section seperti biasa -->
   <!-- 1. HERO SECTION -->
   <section class="hero">
     {heroImageUrl ? (
@@ -248,9 +273,93 @@ const safeProdukLinks = etalaseProdukEksternal?.filter((produk: any) => isSafeUr
     </div>
   </section>
 
+  )}
+
 </PortalLayout>
 
 <style>
+  /* ─── PRIVATE NOTICE ─── */
+  .private-notice {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 1.5rem;
+    background-image: radial-gradient(circle at 50% 50%, rgba(20, 20, 20, 1) 0%, rgba(5, 5, 5, 1) 100%);
+  }
+
+  .private-notice__box {
+    text-align: center;
+    max-width: 520px;
+    background: #0A0A0A;
+    padding: 3.5rem 2.5rem;
+    border-radius: 8px;
+    border: 1px solid rgba(197, 160, 89, 0.25);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
+  }
+
+  .private-notice__icon {
+    width: 56px;
+    height: 56px;
+    margin: 0 auto 1.5rem;
+    color: var(--color-brass);
+  }
+
+  .private-notice__icon svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .private-notice h1 {
+    font-size: 1.75rem;
+    color: var(--color-parchment);
+    margin-bottom: 1rem;
+  }
+
+  .private-notice p {
+    color: #999;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+    font-size: 0.95rem;
+  }
+
+  .private-notice__actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: center;
+  }
+
+  .btn-notice-primary {
+    display: inline-block;
+    background-color: var(--color-velvet);
+    color: var(--color-parchment);
+    padding: 0.75rem 2rem;
+    border-radius: 4px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.85rem;
+    transition: background-color 0.2s, transform 0.2s;
+  }
+
+  .btn-notice-primary:hover {
+    background-color: #9a1421;
+    transform: translateY(-2px);
+  }
+
+  .btn-notice-secondary {
+    display: inline-block;
+    color: #888;
+    font-size: 0.8rem;
+    letter-spacing: 0.5px;
+    transition: color 0.2s;
+  }
+
+  .btn-notice-secondary:hover {
+    color: var(--color-brass);
+  }
+
   /* ─── HERO ─── */
   .hero {
     position: relative;
