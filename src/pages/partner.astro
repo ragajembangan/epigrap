@@ -59,6 +59,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
       </div>
     </section>
+
+    <!-- Kolaborasi Lain Section -->
+    <section class="partner-cta-section container text-center">
+      <h2 class="cta-title">Punya Ide Kolaborasi Lain?</h2>
+      <p class="cta-desc">Apakah Anda mewakili institusi, komunitas sejarah, atau bisnis yang memiliki visi sama dalam melestarikan budaya? Kami sangat terbuka untuk berdiskusi dan menjajaki kerja sama strategis dengan Anda.</p>
+      <a href="mailto:support@epigrap.com" class="btn-cta-alt">Hubungi Kami</a>
+    </section>
   </div>
 </BaseLayout>
 
@@ -224,5 +231,56 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     .cards-grid {
       grid-template-columns: 1fr;
     }
+  }
+
+  /* Kolaborasi Lain Section */
+  .partner-cta-section {
+    margin-top: 5rem;
+    padding: 4rem 2rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px dashed rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    animation: fadeUp 1s ease-out 0.7s forwards;
+    opacity: 0;
+  }
+
+  .cta-title {
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    color: var(--color-parchment);
+    margin-bottom: 1.2rem;
+  }
+
+  .cta-desc {
+    color: rgba(244, 238, 223, 0.7);
+    line-height: 1.7;
+    margin-bottom: 2.5rem;
+    font-size: 1.05rem;
+    max-width: 650px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .btn-cta-alt {
+    display: inline-block;
+    text-align: center;
+    background: var(--color-brass);
+    color: var(--color-obsidian);
+    padding: 0.9rem 2rem;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    text-decoration: none;
+  }
+
+  .btn-cta-alt:hover {
+    background: rgba(197, 160, 89, 0.85);
+    box-shadow: 0 0 15px rgba(197, 160, 89, 0.4);
   }
 </style>

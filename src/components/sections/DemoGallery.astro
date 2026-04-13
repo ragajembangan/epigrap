@@ -1,4 +1,5 @@
 ---
+import { Image } from "astro:assets";
 import { getDemoGallery } from '../../lib/sanity';
 import imageUrlBuilder from '@sanity/image-url';
 import { sanityClient } from 'sanity:client';
@@ -157,18 +158,19 @@ if (cmsData?.sectors && cmsData.sectors.length > 0) {
           {sector.items.map((demo) => (
             <a
               href={demo.url}
+              target="_blank"
+              rel="noopener noreferrer"
               class="demo-card"
               aria-label={`Buka demo ${demo.title}`}
             >
               {/* Background Image */}
-              <img
+              <Image
                 src={demo.image}
                 alt={demo.title}
                 class="demo-card-img"
                 loading="lazy"
                 decoding="async"
-                width="400"
-                height="533"
+                inferSize={true}
                 fetchpriority="low"
               />
 

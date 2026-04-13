@@ -2,8 +2,9 @@
 import { Image } from "astro:assets";
 import { urlFor } from '../../lib/urlFor';
 import type { HomepageUseCaseCard } from '../../lib/sanity';
+import imgPrivat from "../../assets/Palkat_keluarha_epigrap.png";
 import imgPariwisata from "../../assets/pariwisata_prasasti_dieng2_raw.png";
-import imgInstitusi from "../../assets/prasasti_arsip_nasional_prabowo_v3.png";
+import imgInstitusi from "../../assets/prasasti_arsip_nasional_prabowo.png";
 
 interface Props {
   cards?: HomepageUseCaseCard[];
@@ -11,22 +12,28 @@ interface Props {
 
 const defaultCards: HomepageUseCaseCard[] = [
   {
+    _key: 'default-privat',
+    cardTitle: 'Privat & Keluarga',
+    cardDesc: 'Mengabadikan kisah silsilah, makam pusaka, dan memori keluarga dalam portal digital yang bisa diakses lintas generasi — cukup dengan memindai satu kode.',
+    cardFeatures: ['Silsilah & Galeri Memori', 'Audio Memorial', 'Privasi Terkontrol'],
+  },
+  {
     _key: 'default-pariwisata',
     cardTitle: 'Pariwisata & Cagar Budaya',
-    cardDesc: 'Menghadirkan pengalaman smart tourism. Wisatawan dapat memindai QR untuk mengakses sejarah multibahasa, video, dan memberikan apresiasi finansial langsung kepada paguyuban seni lokal.',
-    cardFeatures: ['Sejarah Multibahasa', 'Galeri Video', 'Dukungan Finansial Kreator'],
+    cardDesc: 'Menghadirkan pengalaman smart tourism. Wisatawan dapat memindai QR untuk mengakses sejarah multibahasa, video, dan memberikan apresiasi finansial langsung kepada kreator lokal.',
+    cardFeatures: ['Sejarah Multibahasa', 'Galeri Video', 'Donasi & Produk Digital'],
   },
   {
     _key: 'default-institusi',
-    cardTitle: 'Pemerintah & Institusi',
-    cardDesc: 'Memberikan kedalaman sejarah pada tugu peringatan, museum, atau prasasti peresmian agar publik dapat mengakses literatur, video, dan arsip kenegaraan seketika.',
-    cardFeatures: ['Log Aktivitas Publik', 'Media Interaktif Multibahasa', 'Panel Analitik Akses'],
+    cardTitle: 'Institusi & Enterprise',
+    cardDesc: 'Memberikan kedalaman sejarah pada tugu peringatan, gedung pemerintahan, atau prasasti peresmian agar publik dapat mengakses literatur, video, dan arsip resmi seketika.',
+    cardFeatures: ['Log Aktivitas Publik', 'Integrasi Sistem Kustom', 'Panel Analitik Akses'],
   },
 ];
 
 // Local asset fallback images in order
-const localImages = [imgPariwisata, imgInstitusi];
-const localAlts = ['Pariwisata & Cagar Budaya Epigrap', 'Institusi dan Pemerintah Epigrap'];
+const localImages = [imgPrivat, imgPariwisata, imgInstitusi];
+const localAlts = ['Privat & Keluarga Epigrap', 'Pariwisata & Cagar Budaya Epigrap', 'Institusi & Enterprise Epigrap'];
 
 const { cards = defaultCards } = Astro.props;
 ---
@@ -84,9 +91,9 @@ const { cards = defaultCards } = Astro.props;
   }
 
   .usecase-grid {
-    display: flex;
-    gap: 3rem;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
   }
 
   .usecase-card {
@@ -197,9 +204,15 @@ const { cards = defaultCards } = Astro.props;
     font-size: 0.9em;
   }
 
-  @media (max-width: 850px) {
+  @media (max-width: 1024px) {
     .usecase-grid {
-      flex-direction: column;
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (max-width: 700px) {
+    .usecase-grid {
+      grid-template-columns: 1fr;
     }
   }
 </style>

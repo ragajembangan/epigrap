@@ -24,6 +24,9 @@ export default defineConfig({
   adapter: cloudflare({
     prerenderEnvironment: 'node',
   }),
+  image: {
+    domains: ['i.ibb.co', 'i.ibb.co.com', 'images.unsplash.com', 'cdn.sanity.io'],
+  },
   integrations: [
     clerk(),
     sitemap(),

@@ -35,11 +35,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           </div>
           
           <div class="price-box">
+            <p class="price-from">Mulai dari</p>
             <div class="price-setup">
               <span class="currency">Rp</span>
               <span class="amount">1.500.000</span>
             </div>
-            <p class="price-label">Biaya Setup Awal (Termasuk Masa Aktif 1 Tahun Pertama)</p>
+            <p class="price-label">Setup Awal (Termasuk Masa Aktif 1 Tahun Pertama)</p>
           </div>
 
           <div class="price-renewal">
@@ -53,7 +54,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             <li>Galeri Silsilah & Audio Memorial</li>
           </ul>
 
-          <a href="/dasbor" class="btn-cta btn-outline">Reservasi Sistem</a>
+          <a href="/dasbor" class="btn-cta btn-fill">Reservasi Sistem</a>
+          <p class="cta-note">Harga final disesuaikan kebutuhan Anda. Konsultasi gratis.</p>
         </article>
 
         <!-- Tier 2: Publik -->
@@ -65,11 +67,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           </div>
           
           <div class="price-box">
+            <p class="price-from">Mulai dari</p>
             <div class="price-setup">
               <span class="currency">Rp</span>
               <span class="amount">4.500.000</span>
             </div>
-            <p class="price-label">Biaya Setup Awal (Termasuk Masa Aktif 1 Tahun Pertama)</p>
+            <p class="price-label">Setup Awal (Termasuk Masa Aktif 1 Tahun Pertama)</p>
           </div>
 
           <div class="price-renewal">
@@ -85,6 +88,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           </ul>
 
           <a href="/dasbor" class="btn-cta btn-fill">Reservasi Sistem</a>
+          <p class="cta-note">Harga final disesuaikan kebutuhan Anda. Konsultasi gratis.</p>
         </article>
 
         <!-- Tier 3: Enterprise -->
@@ -113,7 +117,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             <li>Dukungan Teknis Prioritas</li>
           </ul>
 
-          <a href="/dasbor" class="btn-cta btn-outline">Hubungi Konsultan</a>
+          <a href="/dasbor" class="btn-cta btn-fill">Hubungi Konsultan</a>
+          <p class="cta-note">Kami siap menyesuaikan solusi terbaik untuk institusi Anda.</p>
         </article>
 
       </div>
@@ -395,6 +400,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   .card-header {
     text-align: center;
     margin-bottom: 2.5rem;
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
   }
 
   .tier-name {
@@ -418,6 +427,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     padding: 1.5rem;
     border-radius: 8px;
     border-bottom: 1px solid rgba(255,255,255,0.05);
+    min-height: 160px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
 
   .price-setup {
@@ -448,11 +461,29 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     font-family: var(--font-heading);
   }
 
+  .price-from {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--color-brass);
+    margin-bottom: 0.25rem;
+    opacity: 0.85;
+  }
+
   .price-label {
     font-size: 0.75rem;
     color: rgba(255,255,255,0.5);
     text-transform: uppercase;
     letter-spacing: 0.5px;
+  }
+
+  .cta-note {
+    text-align: center;
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.4);
+    margin-top: 0.75rem;
+    font-style: italic;
   }
 
   .price-renewal {
@@ -509,6 +540,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     text-transform: uppercase;
     transition: all 0.3s ease;
     width: 100%;
+    margin-top: auto; /* Dorong tombol ke bawah */
   }
 
   .btn-outline {
